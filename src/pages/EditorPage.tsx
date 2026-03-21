@@ -12,6 +12,7 @@ import { sectionTemplates } from "@/components/editor/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Json } from "@/integrations/supabase/types";
+import VersionHistory from "@/components/editor/VersionHistory";
 
 const EditorPage = () => {
   const { sections, setSections, siteId, pageId, isLoading, isAuthenticated, saveStatus } = useEditorData();
@@ -22,6 +23,7 @@ const EditorPage = () => {
   const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [activeTab, setActiveTab] = useState<"design" | "layers" | "blocks">("design");
   const [previewMode, setPreviewMode] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
 
   // Undo/Redo history
   const [history, setHistory] = useState<Section[][]>([]);
@@ -109,6 +111,11 @@ const EditorPage = () => {
     navigate("/");
   }, [signOut, navigate]);
 
+  const handleRestoreVersion = useCallback((restoredSections: Section[]) => {
+    setSections(restoredSections);
+    pushHistory(restoredSections);
+  }, [setSections, pushHistory]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-background">
@@ -136,6 +143,7 @@ const EditorPage = () => {
         onPublish={handlePublish}
         saveStatus={saveStatus}
         onSignOut={handleSignOut}
+        onOpenHistory={() => setHistoryOpen(true)}
       />
       <div className="flex flex-1 overflow-hidden">
         {!previewMode && (
@@ -169,6 +177,12 @@ const EditorPage = () => {
         {!isAuthenticated && <span className="text-warning">Войдите для сохранения</span>}
         <span className="ml-auto">v2.4.1</span>
       </div>
+      <VersionHistory
+        open={historyOpen}
+        onClose={() => setHistoryOpen(false)}
+        pageId={pageId}
+        onRestore={handleRestoreVersion}
+      />
     </div>
   );
 };
