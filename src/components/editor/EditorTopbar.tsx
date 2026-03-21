@@ -28,7 +28,7 @@ const EditorTopbar = ({
   onUndo, onRedo, canUndo, canRedo,
   previewMode, onTogglePreview,
   onPublish, onSaveDraft, saveStatus = "saved",
-  onSignOut, onOpenHistory,
+  onSignOut, onOpenHistory, onExportHtml,
 }: EditorTopbarProps) => (
   <div className="flex items-center gap-1.5 px-3 h-11 border-b border-border bg-secondary/50 shrink-0">
     <Link to="/dashboard" className="flex items-center gap-1.5 mr-2">
