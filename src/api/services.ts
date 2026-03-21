@@ -30,8 +30,13 @@ const api = async <T>(path: string, opts: RequestInit = {}): Promise<T> => {
 
 export const tariffService = {
   list: () => api<Tariff[]>("/api/tariffs"),
-  calculate: (id: number, params: Record<string, number>) =>
-    api<TariffCalculation>(`/api/tariffs/${id}/calculate?${new URLSearchParams(Object.entries(params).map(([k,v]) => [k, String(v)]))}`),
+  calculate: (id: number, devices?: number, trafficGb?: number, durationMonths?: number) => {
+    const params: Record<string, string> = {};
+    if (devices !== undefined) params.devices = String(devices);
+    if (trafficGb !== undefined) params.traffic_gb = String(trafficGb);
+    if (durationMonths !== undefined) params.duration_months = String(durationMonths);
+    return api<TariffCalculation>(`/api/tariffs/${id}/calculate?${new URLSearchParams(params)}`);
+  },
 };
 
 export const keyService = {
