@@ -111,6 +111,11 @@ const EditorPage = () => {
     navigate("/");
   }, [signOut, navigate]);
 
+  const handleRestoreVersion = useCallback((restoredSections: Section[]) => {
+    setSections(restoredSections);
+    pushHistory(restoredSections);
+  }, [setSections, pushHistory]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-background">
