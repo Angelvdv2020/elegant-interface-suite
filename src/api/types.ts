@@ -136,6 +136,8 @@ export interface CouponValidation {
 export interface ReferralStats {
   referral_link: string;
   total_referrals: number;
+  total_earned?: number;
+  active_referrals?: number;
   levels: {
     level: number;
     percent: number;

@@ -81,6 +81,16 @@ export const referralService = {
   stats: () => api<ReferralStats>("/api/referrals/stats"),
 };
 
+export const subscribeService = {
+  purchase: (data: SubscribeRequest) =>
+    api<SubscribeResponse>("/api/subscribe", { method: "POST", body: JSON.stringify(data) }),
+};
+
+export const giftService = {
+  activate: (code: string) =>
+    api<CouponActivateResponse>("/api/gifts/activate", { method: "POST", body: JSON.stringify({ code }) }),
+};
+
 export const orderService = {
   create: (data: CreateOrderRequest) =>
     api<OrderResponse>("/api/orders", { method: "POST", body: JSON.stringify(data) }),
