@@ -58,6 +58,11 @@ const EditorTopbar = ({
         <button onClick={onRedo} disabled={!canRedo} className={`p-1.5 rounded transition-colors ${canRedo ? "text-muted-foreground hover:text-foreground hover:bg-secondary" : "text-muted-foreground/30 cursor-not-allowed"}`}>
           <Redo2 className="h-3.5 w-3.5" />
         </button>
+        <div className="w-px h-4 bg-border mx-1" />
+        <button onClick={onOpenHistory} className="flex items-center gap-1 px-2 py-1 rounded text-[12px] text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors" title="История версий">
+          <History className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">История</span>
+        </button>
       </>
     )}
 
