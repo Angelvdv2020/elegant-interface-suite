@@ -46,7 +46,7 @@ const DropdownNav = ({ item }: { item: NavItem }) => {
         <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && item.children && (
-        <div className="absolute left-0 top-full mt-2 w-48 rounded-lg border border-border bg-card/95 shadow-glow backdrop-blur-xl py-1.5 shadow-lg z-50">
+        <div className="absolute left-0 top-full mt-2 w-48 rounded-xl border border-border bg-popover shadow-medium py-1.5 z-50">
           {item.children.map((child) => (
             <Link
               key={child.href}
@@ -71,16 +71,14 @@ const Header = () => {
   useEffect(() => { setMobileOpen(false); setMobileExpanded(null); }, [location.pathname]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/70 backdrop-blur-xl">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="container-narrow flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style={{ flexShrink: 0 }}>
-              <path d="M14 2C14 2 22 5 24 7L24 17Q24 23 14 26Q4 23 4 17L4 7C6 5 14 2 14 2Z" fill="rgba(0,255,136,0.08)" stroke="#00ff88" strokeWidth="1.2"/>
-              <rect x="10" y="13" width="8" height="7" rx="2" fill="rgba(0,255,136,0.2)" stroke="#00ff88" strokeWidth="0.8"/>
-              <path d="M11.5 13L11.5 10.5Q11.5 8 14 8Q16.5 8 16.5 10.5L16.5 13" fill="none" stroke="#00ff88" strokeWidth="1.2" strokeLinecap="round"/>
-            </svg>
-          <span className="text-lg font-bold text-foreground">
-            Northline<span className="text-primary">VPN</span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+            <span className="text-sm font-black text-primary-foreground tracking-tight" style={{ fontFamily: "'Unbounded', sans-serif" }}>N</span>
+          </div>
+          <span className="text-lg font-bold text-foreground tracking-tight">
+            Northline<span className="text-gradient-gold">VPN</span>
           </span>
         </Link>
 
@@ -103,7 +101,7 @@ const Header = () => {
 
         <div className="hidden items-center gap-3 lg:flex">
           <ThemeSwitcher variant="dropdown" />
-          <div className="w-px h-5 bg-border/40" />
+          <div className="w-px h-5 bg-border" />
           {user ? (
             <>
               <Button variant="ghost" size="sm" asChild>

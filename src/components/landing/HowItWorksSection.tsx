@@ -7,7 +7,7 @@ const steps = [
 ];
 
 const HowItWorksSection = () => (
-  <section className="section-dark py-10 lg:py-14">
+  <section className="py-16 lg:py-24 bg-secondary/30">
     <div className="section-container">
       <div className="section-heading">
         <span className="section-label">Быстрый старт</span>
@@ -15,35 +15,31 @@ const HowItWorksSection = () => (
         <p>Три простых шага до безопасного интернета</p>
       </div>
 
-      {/* Таймлайн */}
       <div className="relative max-w-4xl mx-auto">
-        {/* Линия между шагами — десктоп */}
-        <div className="hidden md:block absolute top-[52px] left-[calc(16.67%+28px)] right-[calc(16.67%+28px)] h-px bg-gradient-to-r from-primary/50 via-primary/30 to-primary/50" />
+        {/* Connector line — desktop */}
+        <div className="hidden md:block absolute top-[36px] left-[calc(16.67%+32px)] right-[calc(16.67%+32px)] h-px bg-gradient-to-r from-border via-accent/30 to-border" />
 
-        <div className="grid gap-8 md:grid-cols-3 mobile-hscroll">
+        <div className="grid gap-10 md:grid-cols-3 mobile-hscroll">
           {steps.map((s, i) => (
-            <div key={s.num} className="relative flex flex-col items-center text-center">
-              {/* Номер с иконкой */}
-              <div className="relative mb-5">
-                <div className="flex h-[56px] w-[56px] items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 shadow-[0_0_20px_rgba(0,255,136,0.15)]">
+            <div key={s.num} className="relative flex flex-col items-center text-center animate-slide-up" style={{ animationDelay: `${i * 120}ms` }}>
+              <div className="relative mb-6">
+                <div className="flex h-[64px] w-[64px] items-center justify-center rounded-2xl bg-background border border-border shadow-soft">
                   <s.icon className="h-6 w-6 text-primary" />
                 </div>
-                <div className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">
+                <div className="absolute -top-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-accent-foreground shadow-gold">
                   {s.num}
                 </div>
               </div>
 
-              {/* Контент */}
-              <h3 className="text-base font-bold mb-2">{s.title}</h3>
+              <h3 className="text-base font-bold text-foreground mb-2">{s.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed mb-3">{s.desc}</p>
-              <span className="inline-flex items-center rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-xs font-medium text-primary">
+              <span className="inline-flex items-center rounded-full bg-primary/8 border border-primary/15 px-3 py-1 text-xs font-semibold text-primary">
                 {s.time}
               </span>
 
-              {/* Стрелка между шагами — мобайл */}
               {i < steps.length - 1 && (
-                <div className="md:hidden mt-4 flex justify-center">
-                  <div className="h-6 w-px bg-gradient-to-b from-primary/40 to-transparent" />
+                <div className="md:hidden mt-6 flex justify-center">
+                  <div className="h-8 w-px bg-gradient-to-b from-border to-transparent" />
                 </div>
               )}
             </div>
