@@ -20,6 +20,7 @@ interface EditorTopbarProps {
   saveStatus?: "saved" | "saving" | "unsaved";
   onSignOut?: () => void;
   onOpenHistory?: () => void;
+  onExportHtml?: () => void;
 }
 
 const EditorTopbar = ({
