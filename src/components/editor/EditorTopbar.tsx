@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import {
   Undo2, Redo2, Monitor, Tablet, Smartphone, Eye, EyeOff, Save,
-  Settings2, Layers, Blocks, LogOut
+  Settings2, Layers, Blocks, LogOut, History
 } from "lucide-react";
 
 interface EditorTopbarProps {
