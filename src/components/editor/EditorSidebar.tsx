@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Type, Image, LayoutGrid, AlignLeft, Plus, GripVertical } from "lucide-react";
-import type { Section } from "./types";
+import { Type, Image, LayoutGrid, AlignLeft, Plus, GripVertical, Images, FileText, Minus, Megaphone, Trash2 } from "lucide-react";
+import type { Section, SectionType } from "./types";
+import { sectionTemplates } from "./types";
 import MediaLibrary from "./MediaLibrary";
 
 interface EditorSidebarProps {
@@ -8,16 +9,31 @@ interface EditorSidebarProps {
   selected: string;
   setSelected: (id: string) => void;
   siteId?: string | null;
+  onAddSection: (type: SectionType) => void;
+  onDeleteSection: (id: string) => void;
+  pages?: { id: string; title: string; isActive: boolean }[];
+  onSelectPage?: (id: string) => void;
+  onAddPage?: () => void;
 }
 
-const pages = [
-  { name: "Главная", active: true },
-  { name: "О нас", active: false },
-  { name: "Контакты", active: false },
-];
+const iconMap: Record<string, React.ReactNode> = {
+  hero: <Image className="h-3.5 w-3.5 shrink-0" />,
+  cards: <LayoutGrid className="h-3.5 w-3.5 shrink-0" />,
+  text: <AlignLeft className="h-3.5 w-3.5 shrink-0" />,
+  gallery: <Images className="h-3.5 w-3.5 shrink-0" />,
+  form: <FileText className="h-3.5 w-3.5 shrink-0" />,
+  separator: <Minus className="h-3.5 w-3.5 shrink-0" />,
+  cta: <Megaphone className="h-3.5 w-3.5 shrink-0" />,
+};
 
-const EditorSidebar = ({ sections, selected, setSelected, siteId = null }: EditorSidebarProps) => {
+const EditorSidebar = ({
+  sections, selected, setSelected, siteId = null,
+  onAddSection, onDeleteSection,
+  pages = [{ id: "main", title: "Главная", isActive: true }],
+  onSelectPage, onAddPage,
+}: EditorSidebarProps) => {
   const [mediaOpen, setMediaOpen] = useState(false);
+  const [showAddBlock, setShowAddBlock] = useState(false);
 
   return (
     <>
@@ -26,12 +42,18 @@ const EditorSidebar = ({ sections, selected, setSelected, siteId = null }: Edito
         <div className="p-3 border-b border-border">
           <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">Страницы</div>
           {pages.map((p) => (
-            <div key={p.name} className={`flex items-center gap-2 px-2 py-1.5 rounded text-[13px] cursor-pointer mb-0.5 ${p.active ? "bg-brand-light text-brand font-medium border-l-2 border-brand" : "text-muted-foreground hover:bg-secondary"}`}>
+            <div
+              key={p.id}
+              onClick={() => onSelectPage?.(p.id)}
+              className={`flex items-center gap-2 px-2 py-1.5 rounded text-[13px] cursor-pointer mb-0.5 ${
+                p.isActive ? "bg-brand-light text-brand font-medium border-l-2 border-brand" : "text-muted-foreground hover:bg-secondary"
+              }`}
+            >
               <Type className="h-3.5 w-3.5 shrink-0" />
-              {p.name}
+              {p.title}
             </div>
           ))}
-          <button className="flex items-center gap-2 px-2 py-1.5 text-[12px] text-muted-foreground hover:text-foreground w-full">
+          <button onClick={onAddPage} className="flex items-center gap-2 px-2 py-1.5 text-[12px] text-muted-foreground hover:text-foreground w-full">
             <Plus className="h-3.5 w-3.5" /> Добавить
           </button>
         </div>
@@ -43,18 +65,39 @@ const EditorSidebar = ({ sections, selected, setSelected, siteId = null }: Edito
             <div
               key={s.id}
               onClick={() => setSelected(s.id)}
-              className={`flex items-center gap-2 px-2 py-1.5 rounded text-[13px] cursor-pointer mb-0.5 ${selected === s.id ? "bg-brand-light text-brand font-medium border-l-2 border-brand" : "text-muted-foreground hover:bg-secondary"}`}
+              className={`flex items-center gap-2 px-2 py-1.5 rounded text-[13px] cursor-pointer mb-0.5 group/item ${
+                selected === s.id ? "bg-brand-light text-brand font-medium border-l-2 border-brand" : "text-muted-foreground hover:bg-secondary"
+              }`}
             >
               <GripVertical className="h-3 w-3 shrink-0 opacity-40" />
-              {s.type === "hero" && <Image className="h-3.5 w-3.5 shrink-0" />}
-              {s.type === "cards" && <LayoutGrid className="h-3.5 w-3.5 shrink-0" />}
-              {s.type === "text" && <AlignLeft className="h-3.5 w-3.5 shrink-0" />}
-              {s.label}
+              {iconMap[s.type] || <AlignLeft className="h-3.5 w-3.5 shrink-0" />}
+              <span className="flex-1 truncate">{s.label}</span>
+              <Trash2
+                className="h-3 w-3 shrink-0 opacity-0 group-hover/item:opacity-60 hover:!opacity-100 text-destructive cursor-pointer"
+                onClick={(e) => { e.stopPropagation(); onDeleteSection(s.id); }}
+              />
             </div>
           ))}
-          <button className="flex items-center gap-2 px-2 py-1.5 text-[12px] text-muted-foreground hover:text-foreground w-full">
-            <Plus className="h-3.5 w-3.5" /> Добавить блок
-          </button>
+
+          {/* Add block menu */}
+          {showAddBlock ? (
+            <div className="mt-1 border border-border rounded-lg bg-background p-2 space-y-0.5">
+              {(Object.entries(sectionTemplates) as [SectionType, typeof sectionTemplates[SectionType]][]).map(([type, tmpl]) => (
+                <button
+                  key={type}
+                  onClick={() => { onAddSection(type); setShowAddBlock(false); }}
+                  className="flex items-center gap-2 px-2 py-1.5 rounded text-[12px] text-muted-foreground hover:bg-secondary hover:text-foreground w-full transition-colors"
+                >
+                  {iconMap[type]}
+                  {tmpl.label}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <button onClick={() => setShowAddBlock(true)} className="flex items-center gap-2 px-2 py-1.5 text-[12px] text-muted-foreground hover:text-foreground w-full">
+              <Plus className="h-3.5 w-3.5" /> Добавить блок
+            </button>
+          )}
         </div>
 
         {/* Media */}
@@ -66,15 +109,10 @@ const EditorSidebar = ({ sections, selected, setSelected, siteId = null }: Edito
           >
             Изображения
           </div>
-          <div className="text-[12px] text-muted-foreground px-2 py-1.5 hover:bg-secondary rounded cursor-pointer">Иконки</div>
         </div>
       </div>
 
-      <MediaLibrary
-        open={mediaOpen}
-        onClose={() => setMediaOpen(false)}
-        siteId={siteId}
-      />
+      <MediaLibrary open={mediaOpen} onClose={() => setMediaOpen(false)} siteId={siteId} />
     </>
   );
 };
