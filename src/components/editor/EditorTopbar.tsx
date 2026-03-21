@@ -19,6 +19,7 @@ interface EditorTopbarProps {
   onSaveDraft?: () => void;
   saveStatus?: "saved" | "saving" | "unsaved";
   onSignOut?: () => void;
+  onOpenHistory?: () => void;
 }
 
 const EditorTopbar = ({
