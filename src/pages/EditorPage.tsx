@@ -177,6 +177,12 @@ const EditorPage = () => {
         {!isAuthenticated && <span className="text-warning">Войдите для сохранения</span>}
         <span className="ml-auto">v2.4.1</span>
       </div>
+      <VersionHistory
+        open={historyOpen}
+        onClose={() => setHistoryOpen(false)}
+        pageId={pageId}
+        onRestore={handleRestoreVersion}
+      />
     </div>
   );
 };
