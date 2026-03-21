@@ -23,6 +23,7 @@ const EditorPage = () => {
   const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [activeTab, setActiveTab] = useState<"design" | "layers" | "blocks">("design");
   const [previewMode, setPreviewMode] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
 
   // Undo/Redo history
   const [history, setHistory] = useState<Section[][]>([]);
