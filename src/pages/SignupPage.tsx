@@ -1,13 +1,54 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/hooks/useAuth";
+import { Loader2 } from "lucide-react";
 
 const SignupPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password.length < 6) {
+      setError("Пароль должен быть минимум 6 символов");
+      return;
+    }
+    setError("");
+    setLoading(true);
+    const { error } = await signUp(email, password, name);
+    setLoading(false);
+    if (error) {
+      setError(error);
+    } else {
+      setSuccess(true);
+    }
+  };
+
+  if (success) {
+    return (
+      <div className="flex min-h-screen items-center justify-center p-6">
+        <div className="w-full max-w-sm text-center">
+          <div className="w-12 h-12 rounded-full bg-success-light text-success flex items-center justify-center mx-auto mb-4 text-xl">✓</div>
+          <h1 className="text-xl font-bold mb-2">Проверьте почту</h1>
+          <p className="text-sm text-muted-foreground mb-6">
+            Мы отправили ссылку для подтверждения на <strong>{email}</strong>
+          </p>
+          <Link to="/login">
+            <Button variant="outline">Перейти ко входу</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -31,20 +72,26 @@ const SignupPage = () => {
           </div>
           <h1 className="text-xl font-bold text-foreground mb-1">Создать аккаунт</h1>
           <p className="text-sm text-muted-foreground mb-6">Бесплатно. Без карты. За 30 секунд.</p>
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+          {error && (
+            <div className="mb-4 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-sm text-destructive">{error}</div>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="name" className="text-[13px]">Имя</Label>
               <Input id="name" placeholder="Ваше имя" value={name} onChange={(e) => setName(e.target.value)} className="mt-1.5" />
             </div>
             <div>
               <Label htmlFor="email" className="text-[13px]">Email</Label>
-              <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1.5" />
+              <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1.5" required />
             </div>
             <div>
               <Label htmlFor="password" className="text-[13px]">Пароль</Label>
-              <Input id="password" type="password" placeholder="Минимум 8 символов" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1.5" />
+              <Input id="password" type="password" placeholder="Минимум 6 символов" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1.5" required />
             </div>
-            <Button type="submit" className="w-full">Создать аккаунт</Button>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+              Создать аккаунт
+            </Button>
           </form>
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Уже есть аккаунт? <Link to="/login" className="text-brand font-medium hover:underline">Войти</Link>

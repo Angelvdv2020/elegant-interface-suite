@@ -5,20 +5,21 @@ interface EditableTextProps {
   onChange: (value: string) => void;
   className?: string;
   as?: "h2" | "h3" | "p" | "span" | "div";
+  disabled?: boolean;
 }
 
-const EditableText = ({ value, onChange, className = "", as: Tag = "p" }: EditableTextProps) => {
+const EditableText = ({ value, onChange, className = "", as: Tag = "p", disabled = false }: EditableTextProps) => {
   const [editing, setEditing] = useState(false);
   const ref = useRef<HTMLElement>(null);
 
   const startEditing = useCallback(() => {
+    if (disabled) return;
     setEditing(true);
-  }, []);
+  }, [disabled]);
 
   useEffect(() => {
     if (editing && ref.current) {
       ref.current.focus();
-      // Place cursor at end
       const range = document.createRange();
       const sel = window.getSelection();
       range.selectNodeContents(ref.current);
@@ -49,7 +50,7 @@ const EditableText = ({ value, onChange, className = "", as: Tag = "p" }: Editab
   return (
     <Tag
       ref={ref as any}
-      className={`${className} ${editing ? "outline outline-2 outline-brand/40 rounded px-1 -mx-1 bg-white/80" : "cursor-text"}`}
+      className={`${className} ${editing ? "outline outline-2 outline-brand/40 rounded px-1 -mx-1 bg-white/80" : disabled ? "" : "cursor-text"}`}
       contentEditable={editing}
       suppressContentEditableWarning
       onDoubleClick={(e) => {
@@ -58,7 +59,7 @@ const EditableText = ({ value, onChange, className = "", as: Tag = "p" }: Editab
       }}
       onBlur={stopEditing}
       onKeyDown={handleKeyDown}
-      title={editing ? "" : "Двойной клик для редактирования"}
+      title={editing ? "" : disabled ? "" : "Двойной клик для редактирования"}
     >
       {!editing ? value : undefined}
     </Tag>

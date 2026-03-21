@@ -1,12 +1,31 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/hooks/useAuth";
+import { Loader2 } from "lucide-react";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    const { error } = await signIn(email, password);
+    setLoading(false);
+    if (error) {
+      setError(error);
+    } else {
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -30,16 +49,22 @@ const LoginPage = () => {
           </div>
           <h1 className="text-xl font-bold text-foreground mb-1">Войти</h1>
           <p className="text-sm text-muted-foreground mb-6">Введите email и пароль</p>
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+          {error && (
+            <div className="mb-4 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-sm text-destructive">{error}</div>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="email" className="text-[13px]">Email</Label>
-              <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1.5" />
+              <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1.5" required />
             </div>
             <div>
               <Label htmlFor="password" className="text-[13px]">Пароль</Label>
-              <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1.5" />
+              <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1.5" required />
             </div>
-            <Button type="submit" className="w-full">Войти</Button>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+              Войти
+            </Button>
           </form>
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Нет аккаунта? <Link to="/signup" className="text-brand font-medium hover:underline">Зарегистрироваться</Link>
