@@ -143,6 +143,7 @@ const EditorPage = () => {
         onPublish={handlePublish}
         saveStatus={saveStatus}
         onSignOut={handleSignOut}
+        onOpenHistory={() => setHistoryOpen(true)}
       />
       <div className="flex flex-1 overflow-hidden">
         {!previewMode && (
