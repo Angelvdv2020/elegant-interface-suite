@@ -13,6 +13,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Json } from "@/integrations/supabase/types";
 import VersionHistory from "@/components/editor/VersionHistory";
+import { downloadHtml } from "@/lib/exportHtml";
 
 const EditorPage = () => {
   const { sections, setSections, siteId, pageId, isLoading, isAuthenticated, saveStatus } = useEditorData();
@@ -144,6 +145,7 @@ const EditorPage = () => {
         saveStatus={saveStatus}
         onSignOut={handleSignOut}
         onOpenHistory={() => setHistoryOpen(true)}
+        onExportHtml={() => downloadHtml(sections, "Страница")}
       />
       <div className="flex flex-1 overflow-hidden">
         {!previewMode && (
