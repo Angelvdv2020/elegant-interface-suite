@@ -41,6 +41,15 @@ export const keyService = {
   getDevices: (clientId: string) => api<HwidDevice[]>(`/api/keys/${clientId}/devices`),
   removeDevice: (clientId: string, deviceId: string) =>
     api<void>(`/api/keys/${clientId}/devices/${deviceId}`, { method: "DELETE" }),
+  deleteHwidDevice: (clientId: string, hwid: string) =>
+    api<void>(`/api/keys/${clientId}/hwid/${hwid}`, { method: "DELETE" }),
+  freeze: (clientId: string) =>
+    api<{ message: string }>(`/api/keys/${clientId}/freeze`, { method: "POST" }),
+  unfreeze: (clientId: string) =>
+    api<{ expires_at: string }>(`/api/keys/${clientId}/unfreeze`, { method: "POST" }),
+  getHwid: (clientId: string) => api<HwidDevice[]>(`/api/keys/${clientId}/hwid`),
+  resetHwid: (clientId: string) =>
+    api<void>(`/api/keys/${clientId}/hwid/reset`, { method: "POST" }),
 };
 
 export const subscriptionService = {
