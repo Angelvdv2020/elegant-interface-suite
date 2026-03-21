@@ -1,50 +1,49 @@
-import { UserPlus, CreditCard, Wifi } from "lucide-react";
-
 const steps = [
-  { icon: UserPlus, num: "1", title: "Создайте аккаунт", desc: "Через Telegram — один клик. Никаких паспортов и email.", time: "30 сек" },
-  { icon: CreditCard, num: "2", title: "Оплатите подписку", desc: "Купон Plati.ru или оплата в боте. Мгновенное зачисление.", time: "1 мин" },
-  { icon: Wifi, num: "3", title: "Подключитесь", desc: "Скопируйте ключ, вставьте в приложение — готово.", time: "2 мин" },
+  {
+    num: "1",
+    title: "Добавьте скрипт",
+    desc: "Вставьте один тег в HTML вашего сайта. Это всё, что нужно для подключения.",
+    code: '<script src="https://cdn.visually.app/v2/editor.js"\n  data-api-key="vsl_xxx"\n  data-role="editor"\n></script>',
+  },
+  {
+    num: "2",
+    title: "Редактируйте визуально",
+    desc: "Кликайте по элементам, меняйте текст, изображения, стили — прямо на странице.",
+    code: null,
+  },
+  {
+    num: "3",
+    title: "Публикуйте",
+    desc: "Нажмите «Опубликовать» — изменения моментально появятся на сайте. Или запланируйте.",
+    code: null,
+  },
 ];
 
 const HowItWorksSection = () => (
-  <section className="py-16 lg:py-24 bg-secondary/30">
-    <div className="section-container">
-      <div className="section-heading">
-        <span className="section-label">Быстрый старт</span>
-        <h2>Как это работает</h2>
-        <p>Три простых шага до безопасного интернета</p>
+  <section className="py-20 lg:py-28 bg-secondary/30">
+    <div className="mx-auto max-w-4xl px-4 sm:px-6">
+      <div className="text-center mb-14">
+        <div className="text-[11px] font-semibold uppercase tracking-[0.15em] text-brand mb-3">Быстрый старт</div>
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground">Три шага к визуальному редактированию</h2>
       </div>
 
-      <div className="relative max-w-4xl mx-auto">
-        {/* Connector line — desktop */}
-        <div className="hidden md:block absolute top-[36px] left-[calc(16.67%+32px)] right-[calc(16.67%+32px)] h-px bg-gradient-to-r from-border via-accent/30 to-border" />
-
-        <div className="grid gap-10 md:grid-cols-3 mobile-hscroll">
-          {steps.map((s, i) => (
-            <div key={s.num} className="relative flex flex-col items-center text-center animate-slide-up" style={{ animationDelay: `${i * 120}ms` }}>
-              <div className="relative mb-6">
-                <div className="flex h-[64px] w-[64px] items-center justify-center rounded-2xl bg-background border border-border shadow-soft">
-                  <s.icon className="h-6 w-6 text-primary" />
-                </div>
-                <div className="absolute -top-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-accent-foreground shadow-gold">
-                  {s.num}
-                </div>
-              </div>
-
-              <h3 className="text-base font-bold text-foreground mb-2">{s.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-3">{s.desc}</p>
-              <span className="inline-flex items-center rounded-full bg-primary/8 border border-primary/15 px-3 py-1 text-xs font-semibold text-primary">
-                {s.time}
-              </span>
-
-              {i < steps.length - 1 && (
-                <div className="md:hidden mt-6 flex justify-center">
-                  <div className="h-8 w-px bg-gradient-to-b from-border to-transparent" />
-                </div>
+      <div className="space-y-10">
+        {steps.map((s, i) => (
+          <div key={s.num} className="flex gap-5 items-start animate-fade-up" style={{ animationDelay: `${i * 120}ms` }}>
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand text-[13px] font-bold text-brand-light">
+              {s.num}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-[15px] font-semibold text-foreground mb-1">{s.title}</h3>
+              <p className="text-[13px] text-muted-foreground leading-relaxed mb-3">{s.desc}</p>
+              {s.code && (
+                <pre className="rounded-lg bg-foreground text-primary-foreground p-4 text-[12px] leading-relaxed overflow-x-auto font-mono">
+                  {s.code}
+                </pre>
               )}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
