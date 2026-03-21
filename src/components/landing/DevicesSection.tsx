@@ -11,7 +11,7 @@ const platforms = [
 ];
 
 const DevicesSection = () => (
-  <section className="section-dark py-10 lg:py-14">
+  <section className="py-16 lg:py-24 bg-background">
     <div className="section-container">
       <div className="section-heading">
         <span className="section-label">Устройства</span>
@@ -19,10 +19,11 @@ const DevicesSection = () => (
         <p>Работает на всех популярных устройствах и роутерах</p>
       </div>
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6 mobile-hscroll">
-        {platforms.map((p) => (
+        {platforms.map((p, i) => (
           <Link key={p.name} to={p.href}
-            className="card-hover p-5 flex flex-col items-center gap-3 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+            className="group flex flex-col items-center gap-3 text-center py-6 animate-slide-up transition-transform hover:-translate-y-1 active:scale-[0.97]"
+            style={{ animationDelay: `${i * 80}ms` }}>
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/8 border border-primary/15 transition-colors group-hover:bg-primary/12 group-hover:border-primary/25">
               <p.icon className="h-6 w-6 text-primary" />
             </div>
             <div>

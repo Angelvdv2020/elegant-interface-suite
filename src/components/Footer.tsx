@@ -2,17 +2,15 @@ import { Link } from "react-router-dom";
 import { Send } from "lucide-react";
 
 const Footer = () => (
-  <footer className="border-t border-border section-light">
+  <footer className="border-t border-border bg-background">
     <div className="section-container py-5">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="flex items-center gap-4">
-          <Link to="/" className="flex items-center gap-1.5">
-            <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
-                <path d="M14 2C14 2 22 5 24 7L24 17Q24 23 14 26Q4 23 4 17L4 7C6 5 14 2 14 2Z" fill="rgba(0,255,136,0.08)" stroke="#00ff88" strokeWidth="1.2"/>
-                <rect x="10" y="13" width="8" height="7" rx="2" fill="rgba(0,255,136,0.2)" stroke="#00ff88" strokeWidth="0.8"/>
-                <path d="M11.5 13L11.5 10.5Q11.5 8 14 8Q16.5 8 16.5 10.5L16.5 13" fill="none" stroke="#00ff88" strokeWidth="1.2" strokeLinecap="round"/>
-              </svg>
-            <span className="text-xs font-bold text-foreground">Northline<span className="text-primary">VPN</span></span>
+          <Link to="/" className="flex items-center gap-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary">
+              <span className="text-[10px] font-black text-primary-foreground" style={{ fontFamily: "'Unbounded', sans-serif" }}>N</span>
+            </div>
+            <span className="text-xs font-bold text-foreground">Northline<span className="text-gradient-gold">VPN</span></span>
           </Link>
           <span className="text-[11px] text-muted-foreground">© {new Date().getFullYear()}</span>
         </div>

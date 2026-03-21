@@ -57,6 +57,10 @@ export default {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          light: "hsl(var(--gold-light))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -74,11 +78,12 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        glow: "var(--shadow-glow)",
-        card: "var(--shadow-card)",
-        "card-hover": "var(--shadow-card-hover)",
+        soft: "var(--shadow-soft)",
+        medium: "var(--shadow-medium)",
+        lifted: "var(--shadow-lifted)",
         cta: "var(--shadow-cta)",
         "cta-hover": "var(--shadow-cta-hover)",
+        gold: "var(--shadow-gold)",
       },
       keyframes: {
         "accordion-down": {

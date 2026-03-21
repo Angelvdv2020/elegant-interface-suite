@@ -11,27 +11,18 @@ const faqs = [
 ];
 
 const FAQSection = () => (
-  <section id="faq" className="section-light py-10 lg:py-14">
+  <section id="faq" className="py-16 lg:py-24 bg-background">
     <div className="section-container">
       <div className="section-heading">
         <span className="section-label">FAQ</span>
         <h2>Частые вопросы</h2>
       </div>
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Accordion type="single" collapsible className="space-y-2">
-          {faqs.slice(0, 3).map((faq, i) => (
+      <div className="max-w-3xl mx-auto">
+        <Accordion type="single" collapsible className="space-y-3">
+          {faqs.map((faq, i) => (
             <AccordionItem key={i} value={`faq-${i}`}
-              className="rounded-xl border border-border bg-card shadow-glow px-5 data-[state=open]:border-primary/30">
-              <AccordionTrigger className="text-left text-sm font-medium hover:no-underline py-4">{faq.q}</AccordionTrigger>
-              <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">{faq.a}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-        <Accordion type="single" collapsible className="space-y-2">
-          {faqs.slice(3).map((faq, i) => (
-            <AccordionItem key={i} value={`faq-${i + 3}`}
-              className="rounded-xl border border-border bg-card shadow-glow px-5 data-[state=open]:border-primary/30">
-              <AccordionTrigger className="text-left text-sm font-medium hover:no-underline py-4">{faq.q}</AccordionTrigger>
+              className="rounded-xl border border-border bg-background px-5 data-[state=open]:border-primary/30 data-[state=open]:shadow-soft transition-all">
+              <AccordionTrigger className="text-left text-sm font-semibold hover:no-underline py-4 text-foreground">{faq.q}</AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">{faq.a}</AccordionContent>
             </AccordionItem>
           ))}

@@ -8,21 +8,22 @@ const reviews = [
 ];
 
 const ReviewsSection = () => (
-  <section className="section-dark py-10 lg:py-14">
+  <section className="py-16 lg:py-24 bg-secondary/30">
     <div className="section-container">
       <div className="section-heading">
         <span className="section-label">Отзывы</span>
         <h2>Что говорят пользователи</h2>
       </div>
-      <div className="card-grid-4 mobile-hscroll">
-        {reviews.map((r) => (
-          <div key={r.name} className="card-hover p-5 flex flex-col">
-            <Quote className="h-5 w-5 text-primary/40 mb-3" />
-            <p className="text-sm leading-relaxed text-muted-foreground flex-1 mb-4">{r.text}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mobile-hscroll">
+        {reviews.map((r, i) => (
+          <div key={r.name} className="flex flex-col animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
+            <Quote className="h-6 w-6 text-accent/40 mb-4" />
+            <p className="text-sm leading-relaxed text-muted-foreground flex-1 mb-5">{r.text}</p>
+            <div className="premium-divider mb-4" />
             <div>
-              <div className="flex items-center gap-0.5 mb-1">
+              <div className="flex items-center gap-0.5 mb-1.5">
                 {Array.from({ length: r.rating }).map((_, j) => (
-                  <Star key={j} className="h-3 w-3 text-primary" fill="currentColor" />
+                  <Star key={j} className="h-3.5 w-3.5 text-accent" fill="currentColor" />
                 ))}
               </div>
               <div className="text-sm font-semibold text-foreground">{r.name}</div>

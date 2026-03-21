@@ -6,13 +6,13 @@ const stats = [
 ];
 
 const StatsSection = () => (
-  <section className="section-dark py-12 lg:py-14">
+  <section className="py-12 lg:py-16 border-y border-border bg-background">
     <div className="section-container">
-      <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 mobile-hscroll">
-        {stats.map((s) => (
-          <div key={s.label} className="text-center">
-            <div className="text-3xl font-extrabold text-primary sm:text-4xl">{s.value}</div>
-            <div className="mt-1 text-sm text-muted-foreground">{s.label}</div>
+      <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 mobile-hscroll">
+        {stats.map((s, i) => (
+          <div key={s.label} className="text-center animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
+            <div className="text-3xl font-extrabold text-gradient-gold sm:text-4xl" style={{ fontFamily: "'Unbounded', sans-serif" }}>{s.value}</div>
+            <div className="mt-1.5 text-sm text-muted-foreground">{s.label}</div>
           </div>
         ))}
       </div>
