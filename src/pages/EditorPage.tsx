@@ -145,6 +145,7 @@ const EditorPage = () => {
         onPublish={handlePublish} saveStatus={saveStatus}
         onSignOut={handleSignOut} onOpenHistory={() => setHistoryOpen(true)}
         onExportHtml={() => downloadHtml(sections, currentPage?.title ?? "Страница")}
+        onOpenSettings={() => setSettingsOpen(true)}
       />
       <div className="flex flex-1 overflow-hidden">
         {!previewMode && (
