@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
-import { X, Type, Palette, Search as SearchIcon, Globe, Settings2, Sparkles, Shapes } from "lucide-react";
+import { X, Type, Palette, Search as SearchIcon, Globe, Settings2, Sparkles, Shapes, Blend } from "lucide-react";
 import { fontPresets, type FontPreset } from "@/lib/presets/fontPresets";
 import { colorPresets, type ColorPreset } from "@/lib/presets/colorPresets";
 import { shapePresets, type ShapePreset } from "@/lib/presets/shapePresets";
+import { gradientPresets, type GradientPreset } from "@/lib/presets/gradientPresets";
 import type { SiteSettings } from "@/lib/presets/seoDefaults";
 import { defaultSiteSettings } from "@/lib/presets/seoDefaults";
 
@@ -13,11 +14,12 @@ interface GlobalSettingsProps {
   onUpdate: (settings: SiteSettings) => void;
 }
 
-type Tab = "fonts" | "colors" | "seo" | "spacing" | "effects" | "shapes";
+type Tab = "fonts" | "colors" | "gradients" | "seo" | "spacing" | "effects" | "shapes";
 
 const tabs: { key: Tab; label: string; icon: typeof Type }[] = [
   { key: "fonts", label: "Шрифты", icon: Type },
   { key: "colors", label: "Цвета", icon: Palette },
+  { key: "gradients", label: "Градиенты", icon: Blend },
   { key: "shapes", label: "Фигуры", icon: Shapes },
   { key: "seo", label: "SEO", icon: Globe },
   { key: "spacing", label: "Отступы", icon: Settings2 },
@@ -55,6 +57,7 @@ const GlobalSettings = ({ open, onClose, settings, onUpdate }: GlobalSettingsPro
   const [fontCat, setFontCat] = useState<string>("all");
   const [colorCat, setColorCat] = useState<string>("all");
   const [shapeCat, setShapeCat] = useState<string>("all");
+  const [gradCat, setGradCat] = useState<string>("all");
 
   const update = useCallback(
     <K extends keyof SiteSettings>(key: K, value: SiteSettings[K]) => {
@@ -244,6 +247,35 @@ const GlobalSettings = ({ open, onClose, settings, onUpdate }: GlobalSettingsPro
                     ))}
                   </div>
                 </div>
+              </div>
+            )}
+
+            {/* ═══ GRADIENTS ═══ */}
+            {activeTab === "gradients" && (
+              <div>
+                <div className="flex gap-1 mb-4 flex-wrap">
+                  <button onClick={() => setGradCat("all")} className={`px-2.5 py-1 rounded-full text-[11px] transition-colors ${gradCat === "all" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>Все</button>
+                  {[{ key: "soft", label: "Мягкие" }, { key: "vibrant", label: "Яркие" }, { key: "dark", label: "Тёмные" }, { key: "nature", label: "Природа" }, { key: "sunset", label: "Закат" }, { key: "ocean", label: "Океан" }].map(cat => (
+                    <button key={cat.key} onClick={() => setGradCat(cat.key)} className={`px-2.5 py-1 rounded-full text-[11px] transition-colors ${gradCat === cat.key ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>{cat.label}</button>
+                  ))}
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {gradientPresets.filter(g => gradCat === "all" || g.category === gradCat).map(g => (
+                    <button
+                      key={g.id}
+                      onClick={() => navigator.clipboard.writeText(g.css).then(() => {})}
+                      className="rounded-lg border-2 border-border hover:border-primary/40 overflow-hidden transition-all hover:shadow-sm"
+                      title={`${g.name} — нажмите чтобы скопировать CSS`}
+                    >
+                      <div className="h-14 w-full" style={{ background: g.css }} />
+                      <div className="px-2 py-1.5">
+                        <div className="text-[11px] font-medium text-foreground">{g.name}</div>
+                        <div className="text-[9px] text-muted-foreground truncate font-mono">{g.css.slice(0, 40)}…</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-4">Нажмите на градиент чтобы скопировать CSS. Используйте в HTML-блоках или как фон секций.</p>
               </div>
             )}
 
