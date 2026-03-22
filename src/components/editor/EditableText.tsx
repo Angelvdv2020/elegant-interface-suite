@@ -4,7 +4,7 @@ interface EditableTextProps {
   value: string;
   onChange: (value: string) => void;
   className?: string;
-  as?: "h2" | "h3" | "p" | "span" | "div";
+  as?: "h2" | "h3" | "h4" | "p" | "span" | "div";
   disabled?: boolean;
 }
 
