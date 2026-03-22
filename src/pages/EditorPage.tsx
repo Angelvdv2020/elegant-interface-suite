@@ -176,6 +176,7 @@ const EditorPage = () => {
         <span className="ml-auto">v3.0</span>
       </div>
       <VersionHistory open={historyOpen} onClose={() => setHistoryOpen(false)} pageId={pageId} onRestore={handleRestoreVersion} />
+      <GlobalSettings open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={siteSettings} onUpdate={updateSiteSettings} />
     </div>
   );
 };
