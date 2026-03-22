@@ -165,6 +165,16 @@ const EditorPage = () => {
             pages={pages.map(p => ({ id: p.id, title: p.title, isActive: p.id === activePageId }))}
             onSelectPage={handleSelectPage}
             onAddPage={handleAddPage}
+            onToggleVisibility={(id) => {
+              const updated = sections.map(s => s.id === id ? { ...s, content: { ...s.content, __hidden: !(s.content as any).__hidden } } : s);
+              setSections(updated); pushHistory(updated);
+            }}
+            onReorderSection={(fromIdx, toIdx) => {
+              const updated = [...sections];
+              const [moved] = updated.splice(fromIdx, 1);
+              updated.splice(toIdx, 0, moved);
+              setSections(updated); pushHistory(updated);
+            }}
           />
         )}
         <EditorCanvas
