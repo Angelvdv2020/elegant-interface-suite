@@ -114,6 +114,12 @@ export function useEditorData() {
   const [sections, setSectionsState] = useState<Section[]>(defaultSections);
   const [initialized, setInitialized] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">("saved");
+  const [siteSettings, setSiteSettingsState] = useState<SiteSettings>(defaultSiteSettings);
+
+  // Sync settings from DB
+  useEffect(() => {
+    if (siteData?.settings) setSiteSettingsState(siteData.settings);
+  }, [siteData?.settings]);
 
   useEffect(() => {
     if (dbSections && initialized !== currentPageId) {
