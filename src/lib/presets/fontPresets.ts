@@ -44,4 +44,14 @@ export const fontPresets: FontPreset[] = [
   // Display
   { id: "f29", name: "Экспрессия", heading: "Unbounded", body: "DM Sans", category: "display" },
   { id: "f30", name: "Динамика", heading: "Space Grotesk", body: "Plus Jakarta Sans", category: "display" },
+  { id: "f31", name: "Кинетика", heading: "Syne", body: "Inter", category: "display" },
+  { id: "f32", name: "Флоу", heading: "Rubik", body: "Rubik", category: "sans" },
+  { id: "f33", name: "Фьюжн", heading: "Lexend", body: "Lexend", category: "sans" },
+  { id: "f34", name: "Прагма", heading: "IBM Plex Sans", body: "IBM Plex Sans", category: "sans" },
+  { id: "f35", name: "Спарк", heading: "Figtree", body: "Figtree", category: "sans" },
+  { id: "f36", name: "Новелла", heading: "Bitter", body: "Source Sans 3", category: "mixed" },
+  { id: "f37", name: "Тайпо", heading: "Josefin Sans", body: "Open Sans", category: "mixed" },
+  { id: "f38", name: "Медиум", heading: "Spectral", body: "Inter", category: "mixed" },
+  { id: "f39", name: "Студия", heading: "Archivo", body: "Archivo", category: "sans" },
+  { id: "f40", name: "Галактика", heading: "Orbitron", body: "Exo 2", category: "display" },
 ];
