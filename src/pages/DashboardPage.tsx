@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, ExternalLink, LogOut, Loader2, Trash2, X } from "lucide-react";
+import { Plus, ExternalLink, LogOut, Loader2, Trash2, X, Globe } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -102,6 +102,16 @@ const DashboardPage = () => {
     toast.success("Сайт удалён");
   };
 
+  const handleTogglePublish = async (site: SiteRow) => {
+    const newState = !site.is_published;
+    await supabase.from("sites").update({
+      is_published: newState,
+      published_at: newState ? new Date().toISOString() : null,
+    }).eq("id", site.id);
+    await loadSites();
+    toast.success(newState ? "Сайт опубликован!" : "Сайт снят с публикации");
+  };
+
   const handleSignOut = async () => { await signOut(); navigate("/"); };
 
   const timeAgo = (date: string) => {
@@ -161,11 +171,23 @@ const DashboardPage = () => {
               </div>
               <div className="flex items-center gap-2 mb-4">
                 <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${s.plan === "pro" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground"}`}>{s.plan}</span>
-                <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${s.is_published ? "bg-green-50 text-green-700" : "bg-secondary text-muted-foreground"}`}>
+                <button
+                  onClick={() => handleTogglePublish(s)}
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-medium cursor-pointer transition-colors ${s.is_published ? "bg-green-50 text-green-700 hover:bg-green-100" : "bg-secondary text-muted-foreground hover:bg-secondary/80"}`}
+                >
                   {s.is_published ? "Опубликован" : "Черновик"}
-                </span>
+                </button>
               </div>
-              <Button size="sm" asChild className="w-full"><Link to={`/editor?site=${s.id}`}>Редактировать</Link></Button>
+              <div className="flex gap-2">
+                <Button size="sm" asChild className="flex-1"><Link to={`/editor?site=${s.id}`}>Редактировать</Link></Button>
+                {s.is_published && (
+                  <Button size="sm" variant="outline" asChild>
+                    <Link to={`/site/${s.slug}`} target="_blank" className="gap-1">
+                      <Globe className="h-3.5 w-3.5" />
+                    </Link>
+                  </Button>
+                )}
+              </div>
             </div>
           ))}
         </div>
