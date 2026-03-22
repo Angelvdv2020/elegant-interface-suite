@@ -188,6 +188,14 @@ const EditorPage = () => {
       <VersionHistory open={historyOpen} onClose={() => setHistoryOpen(false)} pageId={pageId} onRestore={handleRestoreVersion} />
       <GlobalSettings open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={siteSettings} onUpdate={updateSiteSettings} />
       <OnboardingTour forceOpen={tourOpen} onClose={() => setTourOpen(false)} />
+      <SaveAsTemplate
+        open={templateOpen}
+        onClose={() => setTemplateOpen(false)}
+        siteId={siteId}
+        pages={pages}
+        currentSections={sections}
+        currentPageId={activePageId}
+      />
     </div>
   );
 };
