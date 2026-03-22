@@ -10,6 +10,7 @@ interface EditorPropertiesProps {
   setSelected: (id: string) => void;
   onUpdateResponsive?: (sectionId: string, responsive: Record<Breakpoint, ResponsiveSettings>) => void;
   onUpdateAnimation?: (sectionId: string, animation: AnimationType) => void;
+  isMobile?: boolean;
 }
 
 const breakpoints: { key: Breakpoint; label: string; icon: typeof Monitor }[] = [
