@@ -87,6 +87,12 @@ const EditorPage = () => {
     if (selected === id) setSelected(updated[0]?.id ?? "");
   }, [sections, setSections, pushHistory, selected]);
 
+  const handleUpdateResponsive = useCallback((sectionId: string, responsive: Record<Breakpoint, ResponsiveSettings>) => {
+    const updated = sections.map(s => s.id === sectionId ? { ...s, responsive } : s);
+    setSections(updated);
+    pushHistory(updated);
+  }, [sections, setSections, pushHistory]);
+
   const handlePublish = useCallback(async () => {
     if (!pageId) return;
     await supabase.from("pages").update({ is_published: true, published_at: new Date().toISOString(), is_draft: false }).eq("id", pageId);
