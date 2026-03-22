@@ -13,6 +13,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Json } from "@/integrations/supabase/types";
 import VersionHistory from "@/components/editor/VersionHistory";
+import GlobalSettings from "@/components/editor/GlobalSettings";
 import { downloadHtml } from "@/lib/exportHtml";
 
 const EditorPage = () => {
