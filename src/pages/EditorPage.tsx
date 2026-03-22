@@ -10,7 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import type { Section, SectionType, Breakpoint, ResponsiveSettings, AnimationType } from "@/components/editor/types";
 import { sectionTemplates } from "@/components/editor/types";
-import { Loader2 } from "lucide-react";
+import { Loader2, PanelLeft, SlidersHorizontal, X } from "lucide-react";
 import { toast } from "sonner";
 import type { Json } from "@/integrations/supabase/types";
 import VersionHistory from "@/components/editor/VersionHistory";
