@@ -27,6 +27,8 @@ const DashboardPage = () => {
   const [creating, setCreating] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
   const [newName, setNewName] = useState("");
+  const [userTemplates, setUserTemplates] = useState<any[]>([]);
+  const [templateTab, setTemplateTab] = useState<"builtin" | "my">("builtin");
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/login");
