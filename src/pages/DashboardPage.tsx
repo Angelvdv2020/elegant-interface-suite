@@ -35,7 +35,7 @@ const DashboardPage = () => {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    if (user) loadSites();
+    if (user) { loadSites(); loadUserTemplates(); }
   }, [user]);
 
   const loadSites = async () => {
