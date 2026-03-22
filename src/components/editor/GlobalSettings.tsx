@@ -57,6 +57,7 @@ const GlobalSettings = ({ open, onClose, settings, onUpdate }: GlobalSettingsPro
   const [fontCat, setFontCat] = useState<string>("all");
   const [colorCat, setColorCat] = useState<string>("all");
   const [shapeCat, setShapeCat] = useState<string>("all");
+  const [gradCat, setGradCat] = useState<string>("all");
 
   const update = useCallback(
     <K extends keyof SiteSettings>(key: K, value: SiteSettings[K]) => {
