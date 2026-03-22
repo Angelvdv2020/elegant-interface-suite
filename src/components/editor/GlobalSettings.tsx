@@ -19,6 +19,7 @@ type Tab = "fonts" | "colors" | "gradients" | "seo" | "spacing" | "effects" | "s
 const tabs: { key: Tab; label: string; icon: typeof Type }[] = [
   { key: "fonts", label: "Шрифты", icon: Type },
   { key: "colors", label: "Цвета", icon: Palette },
+  { key: "gradients", label: "Градиенты", icon: Blend },
   { key: "shapes", label: "Фигуры", icon: Shapes },
   { key: "seo", label: "SEO", icon: Globe },
   { key: "spacing", label: "Отступы", icon: Settings2 },
