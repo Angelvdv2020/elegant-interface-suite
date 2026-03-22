@@ -50,6 +50,11 @@ const DashboardPage = () => {
     setLoading(false);
   };
 
+  const loadUserTemplates = async () => {
+    const { data } = await supabase.from("templates").select("*").order("created_at", { ascending: false });
+    if (data) setUserTemplates(data);
+  };
+
   const handleCreateFromTemplate = async (templateId: string, name: string) => {
     if (!name.trim()) return;
     setCreating(true);
