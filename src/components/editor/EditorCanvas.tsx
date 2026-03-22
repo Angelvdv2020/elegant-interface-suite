@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Plus, Trash2, Copy } from "lucide-react";
 import EditableText from "./EditableText";
 import type {
