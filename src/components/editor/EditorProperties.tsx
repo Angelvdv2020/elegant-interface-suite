@@ -25,7 +25,7 @@ const paddingLabels = [
   { key: "left" as const, label: "←" },
 ];
 
-const EditorProperties = ({ sections, selected, setSelected, onUpdateResponsive }: EditorPropertiesProps) => {
+const EditorProperties = ({ sections, selected, setSelected, onUpdateResponsive, onUpdateAnimation }: EditorPropertiesProps) => {
   const [activeBreakpoint, setActiveBreakpoint] = useState<Breakpoint>("desktop");
 
   const selectedSection = sections.find((s) => s.id === selected);
