@@ -834,14 +834,43 @@ const EditorCanvas = ({
     form: renderForm, separator: renderSeparator, cta: renderCTA, html: renderHTML, footer: renderFooter,
   };
 
+  const animClass = (anim?: string) => anim && anim !== "none" ? `sec-anim-${anim}` : "";
+
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!previewMode) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setVisibleSections(prev => new Set(prev).add(entry.target.getAttribute("data-section-id") ?? ""));
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    const el = canvasRef.current;
+    if (el) {
+      el.querySelectorAll("[data-section-id]").forEach(node => observer.observe(node));
+    }
+    return () => observer.disconnect();
+  }, [previewMode, sections]);
+
   return (
-    <div className="flex-1 bg-[#ebebeb] overflow-auto flex justify-center p-6">
+    <div className="flex-1 bg-[#ebebeb] overflow-auto flex justify-center p-6" ref={canvasRef}>
       <div className={`${canvasWidth} w-full`}>
         <div className="bg-background rounded-lg shadow-canvas overflow-hidden">
           {sections.map((section) => (
             <div
               key={section.id}
-              className={`group relative ${previewMode ? "" : "pl-6"}`}
+              data-section-id={section.id}
+              className={`group relative ${previewMode ? "" : "pl-6"} ${
+                previewMode && section.animation && section.animation !== "none"
+                  ? visibleSections.has(section.id) ? animClass(section.animation) : "opacity-0"
+                  : ""
+              }`}
               draggable={!previewMode}
               onDragStart={(e) => handleDragStart(e, section.id)}
               onDragEnd={handleDragEnd}
