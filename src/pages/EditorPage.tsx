@@ -65,6 +65,15 @@ const EditorPage = () => {
     setSections(updated); pushHistory(updated); setSelected(ns.id);
   }, [sections, setSections, pushHistory]);
 
+  const handleDuplicateSection = useCallback((id: string) => {
+    const idx = sections.findIndex(s => s.id === id);
+    if (idx === -1) return;
+    const original = sections[idx];
+    const dup: Section = { ...original, id: crypto.randomUUID(), label: `${original.label} (копия)`, content: JSON.parse(JSON.stringify(original.content)) };
+    const updated = [...sections.slice(0, idx + 1), dup, ...sections.slice(idx + 1)];
+    setSections(updated); pushHistory(updated); setSelected(dup.id);
+  }, [sections, setSections, pushHistory]);
+
   const handleDeleteSection = useCallback((id: string) => {
     const updated = sections.filter(s => s.id !== id);
     setSections(updated); pushHistory(updated);
