@@ -22,6 +22,7 @@ interface EditorTopbarProps {
   onOpenHistory?: () => void;
   onExportHtml?: () => void;
   onOpenSettings?: () => void;
+  onSaveAsTemplate?: () => void;
 }
 
 const EditorTopbar = ({
