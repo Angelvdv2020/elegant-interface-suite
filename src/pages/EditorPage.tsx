@@ -29,6 +29,7 @@ const EditorPage = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
+  const online = useNetworkStatus();
   const [selected, setSelected] = useState("");
   const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [activeTab, setActiveTab] = useState<"design" | "layers" | "blocks">("design");
