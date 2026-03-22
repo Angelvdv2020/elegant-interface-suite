@@ -58,7 +58,8 @@ const DashboardPage = () => {
   const handleCreateFromTemplate = async (templateId: string, name: string, isUserTemplate = false) => {
     if (!name.trim()) return;
     setCreating(true);
-    const slug = name.toLowerCase().replace(/[^a-zа-яё0-9]+/gi, "-").replace(/(^-|-$)/g, "") || "site";
+    const baseSlug = name.toLowerCase().replace(/[^a-zа-яё0-9]+/gi, "-").replace(/(^-|-$)/g, "") || "site";
+    const slug = `${baseSlug}-${Math.random().toString(36).slice(2, 6)}`;
 
     // Create site
     const { data: newSite, error: siteErr } = await supabase.from("sites").insert({
@@ -66,7 +67,8 @@ const DashboardPage = () => {
     }).select("id").single();
 
     if (siteErr || !newSite) {
-      toast.error(siteErr?.message ?? "Ошибка создания");
+      const msg = siteErr?.message?.includes("sites_slug_unique") ? "Slug уже занят, попробуйте другое название" : (siteErr?.message ?? "Ошибка создания");
+      toast.error(msg);
       setCreating(false);
       return;
     }
