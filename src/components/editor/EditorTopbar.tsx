@@ -21,6 +21,7 @@ interface EditorTopbarProps {
   onSignOut?: () => void;
   onOpenHistory?: () => void;
   onExportHtml?: () => void;
+  onOpenSettings?: () => void;
 }
 
 const EditorTopbar = ({
