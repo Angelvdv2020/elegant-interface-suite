@@ -175,7 +175,7 @@ export const siteTemplates: SiteTemplate[] = [
         s("stats"), s("timeline"), s("cards"),
         c("text", "Навыки", { title: "Технический стек", body: "React, TypeScript, Node.js, PostgreSQL, AWS, Docker" }),
         s("footer"),
-      ]} },
+      ]}
     ] },
 
   // ── 18. Фотограф ──
