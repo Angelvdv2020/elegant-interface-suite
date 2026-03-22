@@ -8,6 +8,13 @@ import type {
   ColumnsContent, HTMLContent, LogosContent, TimelineContent, BannerContent,
 } from "./types";
 
+interface SiteStyleSettings {
+  fonts?: { heading: string; body: string };
+  colors?: { primary: string; secondary: string; accent: string; background: string; foreground: string; muted: string };
+  spacing?: { borderRadius: number; sectionGap: number; containerWidth: number };
+  effects?: { shadow: string; animation: string; hoverScale: boolean };
+}
+
 interface EditorCanvasProps {
   device: "desktop" | "tablet" | "mobile";
   sections: Section[];
@@ -18,6 +25,7 @@ interface EditorCanvasProps {
   onDeleteSection: (sectionId: string) => void;
   onDuplicateSection?: (sectionId: string) => void;
   previewMode?: boolean;
+  siteStyles?: SiteStyleSettings;
 }
 
 const DragHandle = () => (
