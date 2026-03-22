@@ -10,6 +10,7 @@ interface EditorPropertiesProps {
   setSelected: (id: string) => void;
   onUpdateResponsive?: (sectionId: string, responsive: Record<Breakpoint, ResponsiveSettings>) => void;
   onUpdateAnimation?: (sectionId: string, animation: AnimationType) => void;
+  isMobile?: boolean;
 }
 
 const breakpoints: { key: Breakpoint; label: string; icon: typeof Monitor }[] = [
@@ -25,7 +26,7 @@ const paddingLabels = [
   { key: "left" as const, label: "←" },
 ];
 
-const EditorProperties = ({ sections, selected, setSelected, onUpdateResponsive, onUpdateAnimation }: EditorPropertiesProps) => {
+const EditorProperties = ({ sections, selected, setSelected, onUpdateResponsive, onUpdateAnimation, isMobile = false }: EditorPropertiesProps) => {
   const [activeBreakpoint, setActiveBreakpoint] = useState<Breakpoint>("desktop");
 
   const selectedSection = sections.find((s) => s.id === selected);
@@ -57,7 +58,7 @@ const EditorProperties = ({ sections, selected, setSelected, onUpdateResponsive,
   }, [selectedSection, responsive, current, activeBreakpoint, onUpdateResponsive]);
 
   return (
-    <div className="w-[220px] shrink-0 border-l border-border bg-secondary/30 overflow-y-auto hidden lg:flex flex-col">
+    <div className={`${isMobile ? "w-full flex" : "w-[220px] shrink-0 border-l border-border bg-secondary/30 hidden lg:flex"} flex-col overflow-y-auto`}>
       {/* Header */}
       <div className="px-3 py-2.5 border-b border-border text-[12px] font-medium text-foreground flex items-center justify-between">
         Свойства блока
