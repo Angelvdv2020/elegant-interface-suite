@@ -16,7 +16,11 @@ import VersionHistory from "@/components/editor/VersionHistory";
 import { downloadHtml } from "@/lib/exportHtml";
 
 const EditorPage = () => {
-  const { sections, setSections, siteId, pageId, isLoading, isAuthenticated, saveStatus } = useEditorData();
+  const {
+    sections, setSections, siteId, pageId, pages, activePageId,
+    switchPage, addPage, deletePage,
+    isLoading, isAuthenticated, saveStatus,
+  } = useEditorData();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -26,7 +30,7 @@ const EditorPage = () => {
   const [previewMode, setPreviewMode] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
 
-  // Undo/Redo history
+  // Undo/Redo
   const [history, setHistory] = useState<Section[][]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
@@ -40,88 +44,71 @@ const EditorPage = () => {
   }, [historyIndex]);
 
   const handleUndo = useCallback(() => {
-    if (historyIndex > 0) {
-      const i = historyIndex - 1;
-      setHistoryIndex(i);
-      setSections(history[i]);
-    }
+    if (historyIndex > 0) { const i = historyIndex - 1; setHistoryIndex(i); setSections(history[i]); }
   }, [historyIndex, history, setSections]);
 
   const handleRedo = useCallback(() => {
-    if (historyIndex < history.length - 1) {
-      const i = historyIndex + 1;
-      setHistoryIndex(i);
-      setSections(history[i]);
-    }
+    if (historyIndex < history.length - 1) { const i = historyIndex + 1; setHistoryIndex(i); setSections(history[i]); }
   }, [historyIndex, history, setSections]);
 
-  const handleSectionsReorder = useCallback((newSections: Section[]) => {
-    setSections(newSections);
-    pushHistory(newSections);
-  }, [setSections, pushHistory]);
+  const handleSectionsReorder = useCallback((ns: Section[]) => { setSections(ns); pushHistory(ns); }, [setSections, pushHistory]);
 
   const handleContentChange = useCallback((sectionId: string, content: Section["content"]) => {
     const updated = sections.map(s => s.id === sectionId ? { ...s, content } : s);
-    setSections(updated);
-    pushHistory(updated);
+    setSections(updated); pushHistory(updated);
   }, [sections, setSections, pushHistory]);
 
   const handleAddSection = useCallback((type: SectionType) => {
     const tmpl = sectionTemplates[type];
-    const newSection: Section = {
-      id: crypto.randomUUID(),
-      type,
-      label: tmpl.label,
-      content: { ...tmpl.content },
-    };
-    const updated = [...sections, newSection];
-    setSections(updated);
-    pushHistory(updated);
-    setSelected(newSection.id);
+    const ns: Section = { id: crypto.randomUUID(), type, label: tmpl.label, content: { ...tmpl.content } };
+    const updated = [...sections, ns];
+    setSections(updated); pushHistory(updated); setSelected(ns.id);
   }, [sections, setSections, pushHistory]);
 
   const handleDeleteSection = useCallback((id: string) => {
     const updated = sections.filter(s => s.id !== id);
-    setSections(updated);
-    pushHistory(updated);
+    setSections(updated); pushHistory(updated);
     if (selected === id) setSelected(updated[0]?.id ?? "");
   }, [sections, setSections, pushHistory, selected]);
 
   const handleUpdateResponsive = useCallback((sectionId: string, responsive: Record<Breakpoint, ResponsiveSettings>) => {
     const updated = sections.map(s => s.id === sectionId ? { ...s, responsive } : s);
-    setSections(updated);
-    pushHistory(updated);
+    setSections(updated); pushHistory(updated);
   }, [sections, setSections, pushHistory]);
 
   const handlePublish = useCallback(async () => {
     if (!pageId) return;
     await supabase.from("pages").update({ is_published: true, published_at: new Date().toISOString(), is_draft: false }).eq("id", pageId);
-    // Save version snapshot
-    const { data: versions } = await supabase
-      .from("page_versions")
-      .select("version_number")
-      .eq("page_id", pageId)
-      .order("version_number", { ascending: false })
-      .limit(1);
+    const { data: versions } = await supabase.from("page_versions").select("version_number").eq("page_id", pageId).order("version_number", { ascending: false }).limit(1);
     const nextVersion = (versions?.[0]?.version_number ?? 0) + 1;
-    await supabase.from("page_versions").insert({
-      page_id: pageId,
-      version_number: nextVersion,
-      sections_snapshot: sections as unknown as Json,
-      created_by: user?.id ?? null,
-    });
+    await supabase.from("page_versions").insert({ page_id: pageId, version_number: nextVersion, sections_snapshot: sections as unknown as Json, created_by: user?.id ?? null });
     toast.success(`Опубликовано (v${nextVersion})`);
   }, [pageId, sections, user]);
 
-  const handleSignOut = useCallback(async () => {
-    await signOut();
-    navigate("/");
-  }, [signOut, navigate]);
+  const handleSignOut = useCallback(async () => { await signOut(); navigate("/"); }, [signOut, navigate]);
 
-  const handleRestoreVersion = useCallback((restoredSections: Section[]) => {
-    setSections(restoredSections);
-    pushHistory(restoredSections);
-  }, [setSections, pushHistory]);
+  const handleRestoreVersion = useCallback((rs: Section[]) => { setSections(rs); pushHistory(rs); }, [setSections, pushHistory]);
+
+  // Page management handlers
+  const handleSelectPage = useCallback((id: string) => {
+    setSelected("");
+    setHistory([]); setHistoryIndex(-1);
+    switchPage(id);
+  }, [switchPage]);
+
+  const handleAddPage = useCallback(async () => {
+    const title = prompt("Название страницы:");
+    if (!title?.trim()) return;
+    const newPage = await addPage(title.trim());
+    if (newPage) {
+      setTimeout(() => switchPage(newPage.id), 300);
+    }
+  }, [addPage, switchPage]);
+
+  const handleDeletePage = useCallback(async (id: string) => {
+    if (!confirm("Удалить эту страницу?")) return;
+    await deletePage(id);
+  }, [deletePage]);
 
   if (isLoading) {
     return (
@@ -132,47 +119,35 @@ const EditorPage = () => {
   }
 
   const statusLabel = saveStatus === "saved" ? "● Сохранено" : saveStatus === "saving" ? "● Сохранение…" : "● Не сохранено";
-  const statusColor = saveStatus === "saved" ? "text-success" : saveStatus === "saving" ? "text-warning" : "text-destructive";
+  const statusColor = saveStatus === "saved" ? "text-green-600" : saveStatus === "saving" ? "text-amber-500" : "text-destructive";
+  const currentPage = pages.find(p => p.id === activePageId);
 
   return (
     <div className="flex flex-col h-screen bg-background overflow-hidden">
       <EditorTopbar
-        device={device}
-        setDevice={setDevice}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onUndo={handleUndo}
-        onRedo={handleRedo}
-        canUndo={historyIndex > 0}
-        canRedo={historyIndex < history.length - 1}
-        previewMode={previewMode}
-        onTogglePreview={() => setPreviewMode(!previewMode)}
-        onPublish={handlePublish}
-        saveStatus={saveStatus}
-        onSignOut={handleSignOut}
-        onOpenHistory={() => setHistoryOpen(true)}
-        onExportHtml={() => downloadHtml(sections, "Страница")}
+        device={device} setDevice={setDevice}
+        activeTab={activeTab} setActiveTab={setActiveTab}
+        onUndo={handleUndo} onRedo={handleRedo}
+        canUndo={historyIndex > 0} canRedo={historyIndex < history.length - 1}
+        previewMode={previewMode} onTogglePreview={() => setPreviewMode(!previewMode)}
+        onPublish={handlePublish} saveStatus={saveStatus}
+        onSignOut={handleSignOut} onOpenHistory={() => setHistoryOpen(true)}
+        onExportHtml={() => downloadHtml(sections, currentPage?.title ?? "Страница")}
       />
       <div className="flex flex-1 overflow-hidden">
         {!previewMode && (
           <EditorSidebar
-            sections={sections}
-            selected={selected}
-            setSelected={setSelected}
-            siteId={siteId}
-            onAddSection={handleAddSection}
-            onDeleteSection={handleDeleteSection}
+            sections={sections} selected={selected} setSelected={setSelected}
+            siteId={siteId} onAddSection={handleAddSection} onDeleteSection={handleDeleteSection}
+            pages={pages.map(p => ({ id: p.id, title: p.title, isActive: p.id === activePageId }))}
+            onSelectPage={handleSelectPage}
+            onAddPage={handleAddPage}
           />
         )}
         <EditorCanvas
-          device={device}
-          sections={sections}
-          selected={selected}
-          setSelected={setSelected}
-          onSectionsReorder={handleSectionsReorder}
-          onSectionContentChange={handleContentChange}
-          onDeleteSection={handleDeleteSection}
-          previewMode={previewMode}
+          device={device} sections={sections} selected={selected} setSelected={setSelected}
+          onSectionsReorder={handleSectionsReorder} onSectionContentChange={handleContentChange}
+          onDeleteSection={handleDeleteSection} previewMode={previewMode}
         />
         {!previewMode && (
           <EditorProperties sections={sections} selected={selected} setSelected={setSelected} onUpdateResponsive={handleUpdateResponsive} />
@@ -180,17 +155,13 @@ const EditorPage = () => {
       </div>
       <div className="flex items-center gap-4 px-3 h-6 border-t border-border bg-secondary/50 text-[10px] text-muted-foreground shrink-0">
         <span className={`${statusColor} font-medium`}>{statusLabel}</span>
-        <span>Zoom: 100%</span>
+        <span>Страница: {currentPage?.title ?? "—"}</span>
+        <span>{pages.length} стр.</span>
         <span>{device === "desktop" ? "1280" : device === "tablet" ? "768" : "375"} × auto</span>
-        {!isAuthenticated && <span className="text-warning">Войдите для сохранения</span>}
-        <span className="ml-auto">v2.4.1</span>
+        {!isAuthenticated && <span className="text-amber-500">Войдите для сохранения</span>}
+        <span className="ml-auto">v3.0</span>
       </div>
-      <VersionHistory
-        open={historyOpen}
-        onClose={() => setHistoryOpen(false)}
-        pageId={pageId}
-        onRestore={handleRestoreVersion}
-      />
+      <VersionHistory open={historyOpen} onClose={() => setHistoryOpen(false)} pageId={pageId} onRestore={handleRestoreVersion} />
     </div>
   );
 };
