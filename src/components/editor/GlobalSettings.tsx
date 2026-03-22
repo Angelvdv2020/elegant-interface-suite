@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { X, Type, Palette, Search as SearchIcon, Globe, Settings2, Sparkles, Shapes } from "lucide-react";
+import { X, Type, Palette, Search as SearchIcon, Globe, Settings2, Sparkles, Shapes, Blend } from "lucide-react";
 import { fontPresets, type FontPreset } from "@/lib/presets/fontPresets";
 import { colorPresets, type ColorPreset } from "@/lib/presets/colorPresets";
 import { shapePresets, type ShapePreset } from "@/lib/presets/shapePresets";
