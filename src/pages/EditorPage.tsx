@@ -38,6 +38,8 @@ const EditorPage = () => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [tourOpen, setTourOpen] = useState(false);
   const [templateOpen, setTemplateOpen] = useState(false);
+  const [mobileSidebar, setMobileSidebar] = useState(false);
+  const [mobileProps, setMobileProps] = useState(false);
 
   // Undo/Redo
   const [history, setHistory] = useState<Section[][]>([]);
