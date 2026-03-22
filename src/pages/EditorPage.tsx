@@ -21,6 +21,7 @@ const EditorPage = () => {
     sections, setSections, siteId, pageId, pages, activePageId,
     switchPage, addPage, deletePage,
     isLoading, isAuthenticated, saveStatus,
+    siteSettings, updateSiteSettings,
   } = useEditorData();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
