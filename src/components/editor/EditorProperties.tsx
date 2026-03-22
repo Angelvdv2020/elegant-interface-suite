@@ -1,13 +1,15 @@
 import { useState, useCallback } from "react";
 import { ChevronDown, Monitor, Tablet, Smartphone, Eye, EyeOff } from "lucide-react";
-import type { Section, Breakpoint, ResponsiveSettings } from "./types";
+import type { Section, Breakpoint, ResponsiveSettings, AnimationType } from "./types";
 import { defaultResponsiveSettings } from "./types";
+import AnimationSettings from "./AnimationSettings";
 
 interface EditorPropertiesProps {
   sections: Section[];
   selected: string;
   setSelected: (id: string) => void;
   onUpdateResponsive?: (sectionId: string, responsive: Record<Breakpoint, ResponsiveSettings>) => void;
+  onUpdateAnimation?: (sectionId: string, animation: AnimationType) => void;
 }
 
 const breakpoints: { key: Breakpoint; label: string; icon: typeof Monitor }[] = [
