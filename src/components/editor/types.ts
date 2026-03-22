@@ -3,6 +3,10 @@ export type SectionType =
   | "navbar" | "footer" | "pricing" | "testimonials" | "faq" | "video"
   | "stats" | "team" | "columns" | "html" | "logos" | "timeline" | "banner";
 
+export type AnimationType =
+  | "none" | "fade-in" | "fade-up" | "fade-down" | "fade-left" | "fade-right"
+  | "zoom-in" | "zoom-out" | "flip" | "bounce" | "slide-up" | "rotate-in";
+
 export type Breakpoint = "desktop" | "tablet" | "mobile";
 
 export interface ResponsivePadding {
@@ -29,6 +33,7 @@ export interface Section {
   label: string;
   content: SectionContent;
   responsive?: Record<Breakpoint, ResponsiveSettings>;
+  animation?: AnimationType;
 }
 
 // ─── Content interfaces ───
