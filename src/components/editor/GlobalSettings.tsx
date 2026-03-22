@@ -250,6 +250,35 @@ const GlobalSettings = ({ open, onClose, settings, onUpdate }: GlobalSettingsPro
               </div>
             )}
 
+            {/* ═══ GRADIENTS ═══ */}
+            {activeTab === "gradients" && (
+              <div>
+                <div className="flex gap-1 mb-4 flex-wrap">
+                  <button onClick={() => setGradCat("all")} className={`px-2.5 py-1 rounded-full text-[11px] transition-colors ${gradCat === "all" ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>Все</button>
+                  {[{ key: "soft", label: "Мягкие" }, { key: "vibrant", label: "Яркие" }, { key: "dark", label: "Тёмные" }, { key: "nature", label: "Природа" }, { key: "sunset", label: "Закат" }, { key: "ocean", label: "Океан" }].map(cat => (
+                    <button key={cat.key} onClick={() => setGradCat(cat.key)} className={`px-2.5 py-1 rounded-full text-[11px] transition-colors ${gradCat === cat.key ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>{cat.label}</button>
+                  ))}
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {gradientPresets.filter(g => gradCat === "all" || g.category === gradCat).map(g => (
+                    <button
+                      key={g.id}
+                      onClick={() => navigator.clipboard.writeText(g.css).then(() => {})}
+                      className="rounded-lg border-2 border-border hover:border-primary/40 overflow-hidden transition-all hover:shadow-sm"
+                      title={`${g.name} — нажмите чтобы скопировать CSS`}
+                    >
+                      <div className="h-14 w-full" style={{ background: g.css }} />
+                      <div className="px-2 py-1.5">
+                        <div className="text-[11px] font-medium text-foreground">{g.name}</div>
+                        <div className="text-[9px] text-muted-foreground truncate font-mono">{g.css.slice(0, 40)}…</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-4">Нажмите на градиент чтобы скопировать CSS. Используйте в HTML-блоках или как фон секций.</p>
+              </div>
+            )}
+
             {/* ═══ SHAPES ═══ */}
             {activeTab === "shapes" && (
               <div>
