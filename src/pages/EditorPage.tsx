@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import type { Json } from "@/integrations/supabase/types";
 import VersionHistory from "@/components/editor/VersionHistory";
 import GlobalSettings from "@/components/editor/GlobalSettings";
+import OnboardingTour from "@/components/editor/OnboardingTour";
 import { downloadHtml } from "@/lib/exportHtml";
 
 const EditorPage = () => {
@@ -32,6 +33,7 @@ const EditorPage = () => {
   const [previewMode, setPreviewMode] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [tourOpen, setTourOpen] = useState(false);
 
   // Undo/Redo
   const [history, setHistory] = useState<Section[][]>([]);
@@ -177,6 +179,7 @@ const EditorPage = () => {
       </div>
       <VersionHistory open={historyOpen} onClose={() => setHistoryOpen(false)} pageId={pageId} onRestore={handleRestoreVersion} />
       <GlobalSettings open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={siteSettings} onUpdate={updateSiteSettings} />
+      <OnboardingTour forceOpen={tourOpen} onClose={() => setTourOpen(false)} />
     </div>
   );
 };
