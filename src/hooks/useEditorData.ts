@@ -106,6 +106,7 @@ export function useEditorData() {
         type: row.type as Section["type"],
         label: row.label,
         content: row.content as unknown as SectionContent,
+        animation: ((row.content as any)?.__animation as AnimationType) ?? undefined,
       })) as Section[];
     },
     enabled: !!currentPageId,
