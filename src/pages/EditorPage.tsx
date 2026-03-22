@@ -179,6 +179,7 @@ const EditorPage = () => {
       </div>
       <VersionHistory open={historyOpen} onClose={() => setHistoryOpen(false)} pageId={pageId} onRestore={handleRestoreVersion} />
       <GlobalSettings open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={siteSettings} onUpdate={updateSiteSettings} />
+      <OnboardingTour forceOpen={tourOpen} onClose={() => setTourOpen(false)} />
     </div>
   );
 };
