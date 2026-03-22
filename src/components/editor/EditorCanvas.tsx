@@ -866,10 +866,33 @@ const EditorCanvas = ({
     return () => observer.disconnect();
   }, [previewMode, sections]);
 
+  const siteStyleVars = siteStyles ? {
+    "--site-font-heading": siteStyles.fonts?.heading ?? "Inter",
+    "--site-font-body": siteStyles.fonts?.body ?? "Inter",
+    "--site-color-primary": `hsl(${siteStyles.colors?.primary ?? "220 14% 28%"})`,
+    "--site-color-secondary": `hsl(${siteStyles.colors?.secondary ?? "220 10% 95%"})`,
+    "--site-color-accent": `hsl(${siteStyles.colors?.accent ?? "220 14% 45%"})`,
+    "--site-color-bg": `hsl(${siteStyles.colors?.background ?? "0 0% 100%"})`,
+    "--site-color-fg": `hsl(${siteStyles.colors?.foreground ?? "220 14% 10%"})`,
+    "--site-color-muted": `hsl(${siteStyles.colors?.muted ?? "220 10% 60%"})`,
+    "--site-radius": `${siteStyles.spacing?.borderRadius ?? 8}px`,
+    "--site-gap": `${siteStyles.spacing?.sectionGap ?? 0}px`,
+    "--site-max-w": `${siteStyles.spacing?.containerWidth ?? 1200}px`,
+  } as React.CSSProperties : {};
+
   return (
     <div className="flex-1 bg-[#ebebeb] overflow-auto flex justify-center p-6" ref={canvasRef}>
       <div className={`${canvasWidth} w-full`}>
-        <div className="bg-background rounded-lg shadow-canvas overflow-hidden">
+        <div
+          className="bg-background rounded-lg shadow-canvas overflow-hidden site-styled"
+          style={{
+            ...siteStyleVars,
+            fontFamily: `'${siteStyles?.fonts?.body ?? "Inter"}', sans-serif`,
+            color: siteStyles?.colors?.foreground ? `hsl(${siteStyles.colors.foreground})` : undefined,
+            backgroundColor: siteStyles?.colors?.background ? `hsl(${siteStyles.colors.background})` : undefined,
+            borderRadius: siteStyles?.spacing?.borderRadius ? `${siteStyles.spacing.borderRadius}px` : undefined,
+          }}
+        >
           {sections.map((section) => (
             <div
               key={section.id}
