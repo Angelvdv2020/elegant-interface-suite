@@ -145,6 +145,12 @@ const EditorProperties = ({ sections, selected, setSelected, onUpdateResponsive,
               })}
             </div>
           </div>
+
+          {/* Animation */}
+          <AnimationSettings
+            animation={selectedSection.animation ?? "none"}
+            onChange={(anim) => onUpdateAnimation?.(selectedSection.id, anim)}
+          />
         </>
       ) : (
         <div className="px-3 py-6 text-center text-[11px] text-muted-foreground">
