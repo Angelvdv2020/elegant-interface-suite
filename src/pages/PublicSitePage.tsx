@@ -46,6 +46,62 @@ const PublicSitePage = () => {
     }
   }, [pages, pageSlug]);
 
+  // SEO meta-tags
+  useEffect(() => {
+    if (!site) return;
+    const seo = site.settings?.seo;
+    const siteName = site.name;
+
+    // Title
+    const pageTitle = currentPage?.title;
+    const seoTitle = seo?.title;
+    document.title = seoTitle ? `${seoTitle} — ${pageTitle ?? siteName}` : pageTitle ? `${pageTitle} — ${siteName}` : siteName;
+
+    // Meta tags
+    const setMeta = (name: string, content: string, property = false) => {
+      if (!content) return;
+      const attr = property ? "property" : "name";
+      let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement("meta");
+        el.setAttribute(attr, name);
+        document.head.appendChild(el);
+      }
+      el.content = content;
+    };
+
+    if (seo?.description) setMeta("description", seo.description);
+    if (seo?.keywords) setMeta("keywords", seo.keywords);
+    if (seo?.author) setMeta("author", seo.author);
+    if (seo?.robots) setMeta("robots", seo.robots);
+    if (seo?.language) {
+      document.documentElement.lang = seo.language;
+      setMeta("og:locale", seo.language === "ru" ? "ru_RU" : "en_US", true);
+    }
+
+    // OG tags
+    setMeta("og:title", seoTitle || siteName, true);
+    if (seo?.description) setMeta("og:description", seo.description, true);
+    if (seo?.ogImage) setMeta("og:image", seo.ogImage, true);
+    setMeta("og:type", "website", true);
+    setMeta("og:url", window.location.href, true);
+
+    // Favicon
+    if (seo?.favicon) {
+      let link = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "icon";
+        document.head.appendChild(link);
+      }
+      link.href = seo.favicon;
+    }
+
+    return () => {
+      document.title = "Visually";
+    };
+  }, [site, currentPage]);
+
   const loadSite = async () => {
     setLoading(true);
     const { data: siteData } = await supabase
@@ -110,22 +166,45 @@ const PublicSitePage = () => {
     );
   }
 
+  const siteStyles = site.settings ? {
+    fonts: site.settings.fonts,
+    colors: site.settings.colors,
+    spacing: site.settings.spacing,
+    effects: site.settings.effects,
+  } : undefined;
+
   return (
-    <div className="min-h-screen bg-background">
+    <div
+      className="min-h-screen"
+      style={{
+        fontFamily: siteStyles?.fonts?.body ? `'${siteStyles.fonts.body}', sans-serif` : undefined,
+        color: siteStyles?.colors?.foreground ? `hsl(${siteStyles.colors.foreground})` : undefined,
+        backgroundColor: siteStyles?.colors?.background ? `hsl(${siteStyles.colors.background})` : undefined,
+      }}
+    >
       {/* Navigation between pages */}
       {pages.length > 1 && (
-        <nav className="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-40">
-          <div className="mx-auto max-w-5xl px-4 flex items-center h-12 gap-1 overflow-x-auto">
-            <span className="text-sm font-semibold text-foreground mr-4 shrink-0">{site.name}</span>
+        <nav
+          className="border-b bg-background/95 backdrop-blur sticky top-0 z-40"
+          style={{
+            borderColor: siteStyles?.colors?.muted ? `hsl(${siteStyles.colors.muted} / 0.2)` : undefined,
+          }}
+        >
+          <div className="mx-auto px-4 flex items-center h-12 gap-1 overflow-x-auto" style={{ maxWidth: siteStyles?.spacing?.containerWidth ?? 1200 }}>
+            <span className="text-sm font-semibold mr-4 shrink-0" style={{ fontFamily: siteStyles?.fonts?.heading ? `'${siteStyles.fonts.heading}', sans-serif` : undefined }}>{site.name}</span>
             {pages.map(p => (
               <Link
                 key={p.id}
                 to={`/site/${site.slug}${p.slug === "index" ? "" : `/${p.slug}`}`}
                 className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 ${
                   currentPage?.id === p.id
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                    ? "font-semibold"
+                    : "opacity-60 hover:opacity-100"
                 }`}
+                style={{
+                  borderRadius: siteStyles?.spacing?.borderRadius ? `${siteStyles.spacing.borderRadius}px` : undefined,
+                  ...(currentPage?.id === p.id ? { backgroundColor: siteStyles?.colors?.primary ? `hsl(${siteStyles.colors.primary} / 0.1)` : undefined, color: siteStyles?.colors?.primary ? `hsl(${siteStyles.colors.primary})` : undefined } : {}),
+                }}
               >
                 {p.title}
               </Link>
@@ -134,9 +213,9 @@ const PublicSitePage = () => {
         </nav>
       )}
 
-      {/* Render sections in preview mode */}
-      <main className="mx-auto max-w-4xl">
-        <div className="bg-background">
+      {/* Render sections */}
+      <main className="mx-auto" style={{ maxWidth: siteStyles?.spacing?.containerWidth ?? 1200 }}>
+        <div>
           {sections.map(section => (
             <EditorCanvas
               key={`${currentPage?.id}-${section.id}`}
@@ -148,10 +227,11 @@ const PublicSitePage = () => {
               onSectionContentChange={() => {}}
               onDeleteSection={() => {}}
               previewMode
+              siteStyles={siteStyles}
             />
           ))}
           {sections.length === 0 && (
-            <div className="py-24 text-center text-muted-foreground">
+            <div className="py-24 text-center" style={{ color: siteStyles?.colors?.muted ? `hsl(${siteStyles.colors.muted})` : undefined }}>
               Эта страница пока пуста.
             </div>
           )}

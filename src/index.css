@@ -130,6 +130,18 @@
 .sec-anim-slide-up { animation: sec-slide-up 0.5s cubic-bezier(0.16,1,0.3,1) both; }
 .sec-anim-rotate-in { animation: sec-rotate-in 0.6s cubic-bezier(0.16,1,0.3,1) both; }
 
+/* Site-styled sections: apply global settings CSS vars */
+.site-styled h1, .site-styled h2, .site-styled h3, .site-styled h4 {
+  font-family: var(--site-font-heading, inherit), sans-serif;
+  color: var(--site-color-fg, inherit);
+}
+.site-styled button:not([class*="opacity-0"]) {
+  border-radius: var(--site-radius, 8px);
+}
+.site-styled .rounded-lg, .site-styled .rounded-xl, .site-styled .rounded-2xl {
+  border-radius: var(--site-radius, 8px);
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
