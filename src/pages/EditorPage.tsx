@@ -13,6 +13,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import type { Json } from "@/integrations/supabase/types";
 import VersionHistory from "@/components/editor/VersionHistory";
+import GlobalSettings from "@/components/editor/GlobalSettings";
 import { downloadHtml } from "@/lib/exportHtml";
 
 const EditorPage = () => {
@@ -20,6 +21,7 @@ const EditorPage = () => {
     sections, setSections, siteId, pageId, pages, activePageId,
     switchPage, addPage, deletePage,
     isLoading, isAuthenticated, saveStatus,
+    siteSettings, updateSiteSettings,
   } = useEditorData();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
@@ -29,6 +31,7 @@ const EditorPage = () => {
   const [activeTab, setActiveTab] = useState<"design" | "layers" | "blocks">("design");
   const [previewMode, setPreviewMode] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Undo/Redo
   const [history, setHistory] = useState<Section[][]>([]);
@@ -142,6 +145,7 @@ const EditorPage = () => {
         onPublish={handlePublish} saveStatus={saveStatus}
         onSignOut={handleSignOut} onOpenHistory={() => setHistoryOpen(true)}
         onExportHtml={() => downloadHtml(sections, currentPage?.title ?? "Страница")}
+        onOpenSettings={() => setSettingsOpen(true)}
       />
       <div className="flex flex-1 overflow-hidden">
         {!previewMode && (
@@ -172,6 +176,7 @@ const EditorPage = () => {
         <span className="ml-auto">v3.0</span>
       </div>
       <VersionHistory open={historyOpen} onClose={() => setHistoryOpen(false)} pageId={pageId} onRestore={handleRestoreVersion} />
+      <GlobalSettings open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={siteSettings} onUpdate={updateSiteSettings} />
     </div>
   );
 };

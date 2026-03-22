@@ -202,6 +202,7 @@ export type Database = {
           name: string
           plan: string
           published_at: string | null
+          settings: Json
           slug: string
           updated_at: string
           user_id: string
@@ -213,6 +214,7 @@ export type Database = {
           name: string
           plan?: string
           published_at?: string | null
+          settings?: Json
           slug: string
           updated_at?: string
           user_id: string
@@ -224,6 +226,7 @@ export type Database = {
           name?: string
           plan?: string
           published_at?: string | null
+          settings?: Json
           slug?: string
           updated_at?: string
           user_id?: string

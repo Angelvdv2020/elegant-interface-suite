@@ -5,6 +5,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import type { Section, SectionContent } from "@/components/editor/types";
 import type { Json } from "@/integrations/supabase/types";
+import type { SiteSettings } from "@/lib/presets/seoDefaults";
+import { defaultSiteSettings } from "@/lib/presets/seoDefaults";
 
 const defaultSections: Section[] = [
   {
@@ -49,6 +51,12 @@ async function resolveSiteAndPages(siteId: string | null) {
     }
   }
 
+  // Load settings
+  const { data: siteRow } = await supabase.from("sites").select("settings").eq("id", resolvedSiteId).single();
+  const settings: SiteSettings = siteRow?.settings && typeof siteRow.settings === "object" && !Array.isArray(siteRow.settings)
+    ? { ...defaultSiteSettings, ...(siteRow.settings as unknown as Partial<SiteSettings>) }
+    : { ...defaultSiteSettings };
+
   const { data: pages } = await supabase.from("pages").select("id, title, slug, sort_order").eq("site_id", resolvedSiteId).order("sort_order");
 
   if (!pages || pages.length === 0) {
@@ -56,10 +64,10 @@ async function resolveSiteAndPages(siteId: string | null) {
     if (error || !newPage) throw error;
     const inserts = defaultSections.map((s, i) => ({ page_id: newPage.id, type: s.type, label: s.label, content: s.content as unknown as Json, sort_order: i }));
     await supabase.from("sections").insert(inserts);
-    return { siteId: resolvedSiteId, pages: [newPage] as PageInfo[] };
+    return { siteId: resolvedSiteId, pages: [newPage] as PageInfo[], settings };
   }
 
-  return { siteId: resolvedSiteId, pages: pages as PageInfo[] };
+  return { siteId: resolvedSiteId, pages: pages as PageInfo[], settings };
 }
 
 export function useEditorData() {
@@ -106,6 +114,12 @@ export function useEditorData() {
   const [sections, setSectionsState] = useState<Section[]>(defaultSections);
   const [initialized, setInitialized] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">("saved");
+  const [siteSettings, setSiteSettingsState] = useState<SiteSettings>(defaultSiteSettings);
+
+  // Sync settings from DB
+  useEffect(() => {
+    if (siteData?.settings) setSiteSettingsState(siteData.settings);
+  }, [siteData?.settings]);
 
   useEffect(() => {
     if (dbSections && initialized !== currentPageId) {
@@ -180,6 +194,12 @@ export function useEditorData() {
     toast.success("Страница удалена");
   }, [siteData, activePageId, queryClient]);
 
+  const updateSiteSettings = useCallback(async (newSettings: SiteSettings) => {
+    setSiteSettingsState(newSettings);
+    if (!siteData?.siteId) return;
+    await supabase.from("sites").update({ settings: newSettings as unknown as Json }).eq("id", siteData.siteId);
+  }, [siteData?.siteId]);
+
   const isLoading = siteLoading || sectionsLoading || initialized !== currentPageId;
   const isAuthenticated = !!siteData;
 
@@ -197,5 +217,7 @@ export function useEditorData() {
     isAuthenticated,
     saveStatus,
     saveMutation,
+    siteSettings,
+    updateSiteSettings,
   };
 }
