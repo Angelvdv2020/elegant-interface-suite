@@ -47,4 +47,32 @@ export const gradientPresets: GradientPreset[] = [
   { id: "g28", name: "Коралл", css: "linear-gradient(135deg, hsl(195 55% 45%), hsl(170 60% 55%))", category: "ocean" },
   { id: "g29", name: "Глубоководный", css: "linear-gradient(180deg, hsl(210 50% 25%), hsl(230 40% 15%))", category: "ocean" },
   { id: "g30", name: "Бриз", css: "linear-gradient(135deg, hsl(185 45% 70%), hsl(210 55% 60%))", category: "ocean" },
+
+  // Pastel
+  { id: "g31", name: "Зефир", css: "linear-gradient(135deg, hsl(300 40% 92%), hsl(200 50% 90%))", category: "soft" },
+  { id: "g32", name: "Персик", css: "linear-gradient(135deg, hsl(20 60% 90%), hsl(40 50% 88%))", category: "soft" },
+  { id: "g33", name: "Мятный крем", css: "linear-gradient(135deg, hsl(160 40% 90%), hsl(140 35% 85%))", category: "soft" },
+  { id: "g34", name: "Сирень", css: "linear-gradient(135deg, hsl(270 30% 90%), hsl(290 25% 85%))", category: "soft" },
+  { id: "g35", name: "Жемчуг", css: "linear-gradient(135deg, hsl(0 0% 98%), hsl(40 20% 94%))", category: "soft" },
+
+  // Neon
+  { id: "g36", name: "Токио", css: "linear-gradient(135deg, hsl(330 90% 50%), hsl(270 80% 55%))", category: "vibrant" },
+  { id: "g37", name: "Лазер", css: "linear-gradient(135deg, hsl(160 90% 45%), hsl(200 95% 50%))", category: "vibrant" },
+  { id: "g38", name: "Плазма", css: "linear-gradient(135deg, hsl(300 85% 50%), hsl(30 90% 50%))", category: "vibrant" },
+  { id: "g39", name: "Аврора", css: "linear-gradient(135deg, hsl(120 60% 50%), hsl(260 70% 55%))", category: "vibrant" },
+  { id: "g40", name: "Спектр", css: "linear-gradient(135deg, hsl(0 80% 55%), hsl(60 85% 50%), hsl(200 90% 50%))", category: "vibrant" },
+
+  // Monochrome dark
+  { id: "g41", name: "Графит", css: "linear-gradient(180deg, hsl(0 0% 15%), hsl(0 0% 8%))", category: "dark" },
+  { id: "g42", name: "Антрацит", css: "linear-gradient(135deg, hsl(210 10% 12%), hsl(210 15% 6%))", category: "dark" },
+  { id: "g43", name: "Вулкан", css: "linear-gradient(135deg, hsl(0 20% 12%), hsl(20 15% 6%))", category: "dark" },
+  { id: "g44", name: "Бездна", css: "linear-gradient(180deg, hsl(250 30% 10%), hsl(220 20% 4%))", category: "dark" },
+  { id: "g45", name: "Сталь", css: "linear-gradient(135deg, hsl(210 15% 20%), hsl(210 10% 12%))", category: "dark" },
+
+  // Earth tones
+  { id: "g46", name: "Терракота", css: "linear-gradient(135deg, hsl(15 45% 45%), hsl(25 35% 35%))", category: "nature" },
+  { id: "g47", name: "Бамбук", css: "linear-gradient(135deg, hsl(80 30% 50%), hsl(60 25% 40%))", category: "nature" },
+  { id: "g48", name: "Пустыня", css: "linear-gradient(135deg, hsl(35 40% 70%), hsl(25 30% 50%))", category: "nature" },
+  { id: "g49", name: "Хвоя", css: "linear-gradient(135deg, hsl(150 30% 30%), hsl(170 25% 22%))", category: "nature" },
+  { id: "g50", name: "Янтарь", css: "linear-gradient(135deg, hsl(40 70% 50%), hsl(30 60% 40%))", category: "nature" },
 ];

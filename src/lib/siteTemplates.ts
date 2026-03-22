@@ -285,4 +285,159 @@ export const siteTemplates: SiteTemplate[] = [
       { title: "Услуги", slug: "services", sections: [s("navbar"), s("pricing"), s("footer")] },
       { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
     ] },
+  // ── 31. Барбершоп ──
+  { id: "barbershop", name: "Барбершоп", description: "Услуги, мастера, онлайн-запись", icon: "💈",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Стиль начинается здесь", description: "Мужские стрижки, бритьё, уход за бородой", buttonText: "Записаться →" }), s("cards"), s("team"), s("testimonials"), s("footer")] },
+      { title: "Услуги", slug: "services", sections: [s("navbar"), s("pricing"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 32. Йога-студия ──
+  { id: "yoga", name: "Йога-студия", description: "Расписание, преподаватели, абонементы", icon: "🧘",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Гармония тела и разума", description: "Хатха, виньяса, кундалини — 30+ классов в неделю", buttonText: "Пробное занятие →" }), s("stats"), s("cards"), s("team"), s("pricing"), s("footer")] },
+      { title: "Расписание", slug: "schedule", sections: [s("navbar"), s("text"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 33. Кофейня ──
+  { id: "coffee", name: "Кофейня", description: "Меню, атмосфера, локации", icon: "☕",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Каждая чашка — маленькое путешествие", description: "Specialty coffee из лучших обжарщиков мира", buttonText: "Наше меню →" }), s("gallery"), s("stats"), s("testimonials"), s("footer")] },
+      { title: "Меню", slug: "menu", sections: [s("navbar"), s("cards"), s("footer")] },
+    ] },
+
+  // ── 34. Автосервис ──
+  { id: "autoservice", name: "Автосервис", description: "Услуги, цены, запись на ТО", icon: "🔧",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Ваш автомобиль в надёжных руках", description: "Диагностика, ремонт, ТО всех марок. Гарантия 2 года.", buttonText: "Записаться на ТО →" }), s("cards"), s("stats"), s("pricing"), s("testimonials"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 35. Языковая школа ──
+  { id: "langschool", name: "Языковая школа", description: "Курсы, уровни, преподаватели", icon: "🌍",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Заговорите на новом языке", description: "Английский, немецкий, китайский — с носителями языка", buttonText: "Бесплатный урок →" }), s("cards"), s("stats"), s("team"), s("pricing"), s("faq"), s("footer")] },
+      { title: "О школе", slug: "about", sections: [s("navbar"), s("text"), s("timeline"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 36. Фотограф ──
+  { id: "photographer", name: "Фотограф", description: "Портфолио, пакеты услуг, бронирование", icon: "📸",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Ловлю моменты, которые вы запомните", description: "Свадьбы, портреты, коммерческая съёмка", buttonText: "Смотреть портфолио →" }), s("gallery"), s("stats"), s("testimonials"), s("footer")] },
+      { title: "Цены", slug: "pricing", sections: [s("navbar"), s("pricing"), s("faq"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 37. Музыкант / DJ ──
+  { id: "musician", name: "Музыкант", description: "Биография, треки, букинг", icon: "🎵",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Музыка, которая двигает", description: "DJ, продюсер, саунд-дизайнер", buttonText: "Слушать →" }), s("video"), s("stats"), s("timeline"), s("footer")] },
+      { title: "Букинг", slug: "booking", sections: [s("navbar"), s("pricing"), s("form"), s("footer")] },
+    ] },
+
+  // ── 38. Стоматология ──
+  { id: "dental", name: "Стоматология", description: "Врачи, услуги, запись", icon: "🦷",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Улыбка, которой вы гордитесь", description: "Современная стоматология без боли. 20 лет опыта.", buttonText: "Записаться →" }), s("cards"), s("stats"), s("team"), s("testimonials"), s("footer")] },
+      { title: "Услуги", slug: "services", sections: [s("navbar"), s("pricing"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 39. Кондитерская ──
+  { id: "bakery", name: "Кондитерская", description: "Каталог, заказ тортов, доставка", icon: "🎂",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Сладость для каждого момента", description: "Торты на заказ, десерты, капкейки. Доставка по городу.", buttonText: "Каталог →" }), s("gallery"), s("cards"), s("testimonials"), s("footer")] },
+      { title: "Каталог", slug: "catalog", sections: [s("navbar"), s("cards"), s("pricing"), s("footer")] },
+      { title: "Заказ", slug: "order", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 40. Геймдев-студия ──
+  { id: "gamedev", name: "Геймдев-студия", description: "Игры, команда, вакансии", icon: "🎮",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Создаём миры, в которых хочется жить", description: "Инди-студия. RPG, стратегии, симуляторы.", buttonText: "Наши игры →" }), s("gallery"), s("video"), s("stats"), s("team"), s("footer")] },
+      { title: "Игры", slug: "games", sections: [s("navbar"), s("cards"), s("footer")] },
+      { title: "Вакансии", slug: "careers", sections: [s("navbar"), s("text"), s("form"), s("footer")] },
+    ] },
+
+  // ── 41. Детский сад ──
+  { id: "kindergarten", name: "Детский сад", description: "Программы, педагоги, условия", icon: "🧒",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Пространство, где дети растут счастливыми", description: "Развивающие программы для детей 2–7 лет", buttonText: "Записаться →" }), s("cards"), s("stats"), s("team"), s("gallery"), s("testimonials"), s("faq"), s("footer")] },
+      { title: "Программы", slug: "programs", sections: [s("navbar"), s("pricing"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 42. Туристическое агентство ──
+  { id: "travel", name: "Турагентство", description: "Туры, направления, бронирование", icon: "✈️",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Откройте мир с нами", description: "Авторские туры в 50+ стран. Всё включено.", buttonText: "Подобрать тур →" }), s("cards"), s("stats"), s("gallery"), s("testimonials"), s("footer")] },
+      { title: "Направления", slug: "destinations", sections: [s("navbar"), s("cards"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 43. Благотворительный фонд ──
+  { id: "charity", name: "Благотворительный фонд", description: "Миссия, проекты, пожертвования", icon: "💛",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Каждый вклад имеет значение", description: "Помогаем детям, семьям, сообществам с 2015 года", buttonText: "Помочь сейчас →" }), s("stats"), s("cards"), s("testimonials"), s("timeline"), s("cta"), s("footer")] },
+      { title: "Проекты", slug: "projects", sections: [s("navbar"), s("cards"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 44. Подкаст ──
+  { id: "podcast", name: "Подкаст", description: "Эпизоды, ведущие, подписка", icon: "🎙️",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Разговоры, которые меняют перспективу", description: "Еженедельный подкаст о технологиях, бизнесе и жизни", buttonText: "Слушать →" }), s("video"), s("cards"), s("team"), s("stats"), s("footer")] },
+      { title: "Эпизоды", slug: "episodes", sections: [s("navbar"), s("cards"), s("footer")] },
+    ] },
+
+  // ── 45. Салон красоты ──
+  { id: "beautysalon", name: "Салон красоты", description: "Услуги, мастера, онлайн-запись", icon: "💅",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Красота — это искусство", description: "Стрижки, окрашивание, маникюр, макияж. 10+ мастеров.", buttonText: "Записаться →" }), s("cards"), s("gallery"), s("team"), s("pricing"), s("testimonials"), s("footer")] },
+      { title: "Цены", slug: "pricing", sections: [s("navbar"), s("pricing"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 46. Коворкинг ──
+  { id: "coworking", name: "Коворкинг", description: "Тарифы, пространства, бронирование", icon: "🏢",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Ваш офис в центре города", description: "Гибкие рабочие пространства, переговорные, лаундж. 24/7.", buttonText: "Забронировать →" }), s("gallery"), s("stats"), s("pricing"), s("testimonials"), s("footer")] },
+      { title: "Пространства", slug: "spaces", sections: [s("navbar"), s("cards"), s("gallery"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 47. Мебельная мастерская ──
+  { id: "furniture", name: "Мебельная мастерская", description: "Каталог, кастом, портфолио работ", icon: "🪑",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Мебель с характером", description: "Ручная работа из массива дерева. Уникальный дизайн.", buttonText: "Каталог →" }), s("gallery"), s("cards"), s("stats"), s("testimonials"), s("footer")] },
+      { title: "Каталог", slug: "catalog", sections: [s("navbar"), s("cards"), s("footer")] },
+      { title: "Заказ", slug: "order", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 48. Психолог ──
+  { id: "psychologist", name: "Психолог", description: "Методы, консультации, запись", icon: "🧠",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Пространство для вашего внутреннего роста", description: "КПТ, гештальт, семейная терапия. Онлайн и очно.", buttonText: "Записаться на консультацию →" }), s("cards"), s("stats"), s("testimonials"), s("faq"), s("footer")] },
+      { title: "Обо мне", slug: "about", sections: [s("navbar"), s("text"), s("timeline"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
+
+  // ── 49. Книжный магазин ──
+  { id: "bookshop", name: "Книжный магазин", description: "Каталог, рекомендации, мероприятия", icon: "📚",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Книги, которые меняют жизнь", description: "Независимый книжный. Тщательно отобранная коллекция.", buttonText: "Смотреть каталог →" }), s("cards"), s("gallery"), s("testimonials"), s("footer")] },
+      { title: "События", slug: "events", sections: [s("navbar"), s("cards"), s("timeline"), s("footer")] },
+    ] },
+
+  // ── 50. Флорист ──
+  { id: "florist", name: "Флорист", description: "Букеты, оформление, доставка", icon: "💐",
+    pages: [
+      { title: "Главная", slug: "index", sections: [s("navbar"), c("hero", "Герой", { title: "Цветы с душой", description: "Авторские букеты, свадебная флористика, оформление мероприятий", buttonText: "Выбрать букет →" }), s("gallery"), s("cards"), s("pricing"), s("testimonials"), s("footer")] },
+      { title: "Каталог", slug: "catalog", sections: [s("navbar"), s("cards"), s("footer")] },
+      { title: "Доставка", slug: "delivery", sections: [s("navbar"), s("text"), s("faq"), s("footer")] },
+      { title: "Контакты", slug: "contact", sections: [s("navbar"), s("form"), s("footer")] },
+    ] },
 ];
