@@ -7,7 +7,7 @@ import EditorProperties from "@/components/editor/EditorProperties";
 import { useEditorData } from "@/hooks/useEditorData";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import type { Section, SectionType } from "@/components/editor/types";
+import type { Section, SectionType, Breakpoint, ResponsiveSettings } from "@/components/editor/types";
 import { sectionTemplates } from "@/components/editor/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -86,6 +86,12 @@ const EditorPage = () => {
     pushHistory(updated);
     if (selected === id) setSelected(updated[0]?.id ?? "");
   }, [sections, setSections, pushHistory, selected]);
+
+  const handleUpdateResponsive = useCallback((sectionId: string, responsive: Record<Breakpoint, ResponsiveSettings>) => {
+    const updated = sections.map(s => s.id === sectionId ? { ...s, responsive } : s);
+    setSections(updated);
+    pushHistory(updated);
+  }, [sections, setSections, pushHistory]);
 
   const handlePublish = useCallback(async () => {
     if (!pageId) return;
@@ -169,7 +175,7 @@ const EditorPage = () => {
           previewMode={previewMode}
         />
         {!previewMode && (
-          <EditorProperties sections={sections} selected={selected} setSelected={setSelected} />
+          <EditorProperties sections={sections} selected={selected} setSelected={setSelected} onUpdateResponsive={handleUpdateResponsive} />
         )}
       </div>
       <div className="flex items-center gap-4 px-3 h-6 border-t border-border bg-secondary/50 text-[10px] text-muted-foreground shrink-0">
