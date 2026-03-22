@@ -133,7 +133,7 @@ export function useEditorData() {
     }
   }, [dbSections, initialized, currentPageId]);
 
-  // Save mutation
+  // Save mutation with retry
   const saveMutation = useMutation({
     mutationFn: async (sectionsToSave: Section[]) => {
       if (!currentPageId) return;
@@ -150,7 +150,16 @@ export function useEditorData() {
       if (error) throw error;
     },
     onSuccess: () => setSaveStatus("saved"),
-    onError: (err: Error) => { setSaveStatus("unsaved"); toast.error("Ошибка сохранения: " + err.message); },
+    onError: (err: Error) => {
+      setSaveStatus("unsaved");
+      toast.error("Ошибка сохранения — повтор через 5 сек.", { description: err.message });
+      // Auto-retry after 5s
+      setTimeout(() => {
+        saveMutation.mutate(sections);
+      }, 5000);
+    },
+    retry: 2,
+    retryDelay: 3000,
   });
 
   const debouncedSave = useCallback((newSections: Section[]) => {
