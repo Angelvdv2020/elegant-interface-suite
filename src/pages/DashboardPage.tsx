@@ -55,10 +55,9 @@ const DashboardPage = () => {
     if (data) setUserTemplates(data);
   };
 
-  const handleCreateFromTemplate = async (templateId: string, name: string) => {
+  const handleCreateFromTemplate = async (templateId: string, name: string, isUserTemplate = false) => {
     if (!name.trim()) return;
     setCreating(true);
-    const template = siteTemplates.find(t => t.id === templateId)!;
     const slug = name.toLowerCase().replace(/[^a-zа-яё0-9]+/gi, "-").replace(/(^-|-$)/g, "") || "site";
 
     // Create site
@@ -72,9 +71,21 @@ const DashboardPage = () => {
       return;
     }
 
-    // Create pages with sections
-    for (let pi = 0; pi < template.pages.length; pi++) {
-      const pageTmpl = template.pages[pi];
+    let templatePages: { title: string; slug: string; sections: { type: string; label: string; content: any }[] }[];
+
+    if (isUserTemplate) {
+      const ut = userTemplates.find(t => t.id === templateId);
+      templatePages = (ut?.pages_data as any[]) ?? [];
+    } else {
+      const template = siteTemplates.find(t => t.id === templateId)!;
+      templatePages = template.pages.map(p => ({
+        title: p.title, slug: p.slug,
+        sections: p.sections.map(s => ({ type: s.type, label: s.label, content: s.content })),
+      }));
+    }
+
+    for (let pi = 0; pi < templatePages.length; pi++) {
+      const pageTmpl = templatePages[pi];
       const { data: newPage, error: pageErr } = await supabase.from("pages").insert({
         site_id: newSite.id,
         title: pageTmpl.title,
@@ -84,7 +95,7 @@ const DashboardPage = () => {
 
       if (pageErr || !newPage) continue;
 
-      const sectionInserts = pageTmpl.sections.map((s, si) => ({
+      const sectionInserts = pageTmpl.sections.map((s: any, si: number) => ({
         page_id: newPage.id,
         type: s.type,
         label: s.label,
@@ -97,9 +108,16 @@ const DashboardPage = () => {
     setNewName("");
     setShowTemplates(false);
     await loadSites();
-    toast.success(`Сайт «${name}» создан из шаблона «${template.name}»`);
+    toast.success(`Сайт «${name}» создан!`);
     navigate(`/editor?site=${newSite.id}`);
     setCreating(false);
+  };
+
+  const handleDeleteTemplate = async (id: string) => {
+    if (!confirm("Удалить шаблон?")) return;
+    await supabase.from("templates").delete().eq("id", id);
+    await loadUserTemplates();
+    toast.success("Шаблон удалён");
   };
 
   const handleDelete = async (id: string) => {
