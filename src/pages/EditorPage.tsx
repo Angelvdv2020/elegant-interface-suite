@@ -175,7 +175,7 @@ const EditorPage = () => {
           previewMode={previewMode}
         />
         {!previewMode && (
-          <EditorProperties sections={sections} selected={selected} setSelected={setSelected} />
+          <EditorProperties sections={sections} selected={selected} setSelected={setSelected} onUpdateResponsive={handleUpdateResponsive} />
         )}
       </div>
       <div className="flex items-center gap-4 px-3 h-6 border-t border-border bg-secondary/50 text-[10px] text-muted-foreground shrink-0">
