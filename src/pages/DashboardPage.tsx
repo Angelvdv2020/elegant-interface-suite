@@ -102,6 +102,16 @@ const DashboardPage = () => {
     toast.success("Сайт удалён");
   };
 
+  const handleTogglePublish = async (site: SiteRow) => {
+    const newState = !site.is_published;
+    await supabase.from("sites").update({
+      is_published: newState,
+      published_at: newState ? new Date().toISOString() : null,
+    }).eq("id", site.id);
+    await loadSites();
+    toast.success(newState ? "Сайт опубликован!" : "Сайт снят с публикации");
+  };
+
   const handleSignOut = async () => { await signOut(); navigate("/"); };
 
   const timeAgo = (date: string) => {
