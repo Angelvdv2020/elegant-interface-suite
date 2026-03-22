@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import type { Section, SectionContent } from "@/components/editor/types";
+import type { Section, SectionContent, AnimationType } from "@/components/editor/types";
 import type { Json } from "@/integrations/supabase/types";
 import type { SiteSettings } from "@/lib/presets/seoDefaults";
 import { defaultSiteSettings } from "@/lib/presets/seoDefaults";
