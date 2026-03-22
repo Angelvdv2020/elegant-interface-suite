@@ -172,6 +172,7 @@ const EditorPage = () => {
           onSectionsReorder={handleSectionsReorder} onSectionContentChange={handleContentChange}
           onDeleteSection={handleDeleteSection} onDuplicateSection={handleDuplicateSection}
           previewMode={previewMode}
+          siteStyles={siteSettings}
         />
         {!previewMode && (
           <EditorProperties sections={sections} selected={selected} setSelected={setSelected} onUpdateResponsive={handleUpdateResponsive} onUpdateAnimation={handleUpdateAnimation} />
