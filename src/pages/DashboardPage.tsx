@@ -243,33 +243,99 @@ const DashboardPage = () => {
                   placeholder="Название вашего сайта"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
-                  className="mb-6 h-10"
+                  className="mb-4 h-10"
                 />
 
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {siteTemplates.map((tmpl) => (
-                    <button
-                      key={tmpl.id}
-                      disabled={creating || !newName.trim()}
-                      onClick={() => handleCreateFromTemplate(tmpl.id, newName)}
-                      className="text-left rounded-xl border border-border p-5 hover:border-primary/40 hover:bg-primary/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="text-2xl">{tmpl.icon}</span>
-                        <div>
-                          <div className="text-[14px] font-semibold">{tmpl.name}</div>
-                          <div className="text-[11px] text-muted-foreground">{tmpl.pages.length} {tmpl.pages.length === 1 ? "страница" : tmpl.pages.length < 5 ? "страницы" : "страниц"}</div>
-                        </div>
-                      </div>
-                      <p className="text-[12px] text-muted-foreground leading-relaxed">{tmpl.description}</p>
-                      <div className="mt-3 flex flex-wrap gap-1">
-                        {tmpl.pages.map(p => (
-                          <span key={p.slug} className="px-2 py-0.5 rounded-full bg-secondary text-[10px] text-muted-foreground">{p.title}</span>
-                        ))}
-                      </div>
-                    </button>
-                  ))}
+                {/* Tabs */}
+                <div className="flex gap-2 mb-4">
+                  <button
+                    onClick={() => setTemplateTab("builtin")}
+                    className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors ${
+                      templateTab === "builtin" ? "bg-primary/10 text-primary border border-primary/20" : "border border-border text-muted-foreground hover:bg-secondary"
+                    }`}
+                  >Готовые шаблоны</button>
+                  <button
+                    onClick={() => setTemplateTab("my")}
+                    className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors flex items-center gap-1.5 ${
+                      templateTab === "my" ? "bg-primary/10 text-primary border border-primary/20" : "border border-border text-muted-foreground hover:bg-secondary"
+                    }`}
+                  >
+                    <BookTemplate className="h-3.5 w-3.5" />
+                    Мои шаблоны {userTemplates.length > 0 && <span className="bg-primary/20 text-primary rounded-full px-1.5 text-[10px]">{userTemplates.length}</span>}
+                  </button>
                 </div>
+
+                {templateTab === "builtin" ? (
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {siteTemplates.map((tmpl) => (
+                      <button
+                        key={tmpl.id}
+                        disabled={creating || !newName.trim()}
+                        onClick={() => handleCreateFromTemplate(tmpl.id, newName)}
+                        className="text-left rounded-xl border border-border p-5 hover:border-primary/40 hover:bg-primary/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="text-2xl">{tmpl.icon}</span>
+                          <div>
+                            <div className="text-[14px] font-semibold">{tmpl.name}</div>
+                            <div className="text-[11px] text-muted-foreground">{tmpl.pages.length} {tmpl.pages.length === 1 ? "страница" : tmpl.pages.length < 5 ? "страницы" : "страниц"}</div>
+                          </div>
+                        </div>
+                        <p className="text-[12px] text-muted-foreground leading-relaxed">{tmpl.description}</p>
+                        <div className="mt-3 flex flex-wrap gap-1">
+                          {tmpl.pages.map(p => (
+                            <span key={p.slug} className="px-2 py-0.5 rounded-full bg-secondary text-[10px] text-muted-foreground">{p.title}</span>
+                          ))}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {userTemplates.length === 0 ? (
+                      <div className="col-span-2 text-center py-8 text-muted-foreground text-[13px]">
+                        <BookTemplate className="h-8 w-8 mx-auto mb-2 opacity-30" />
+                        <p>Нет сохранённых шаблонов</p>
+                        <p className="text-[11px] mt-1">Сохраните сайт как шаблон в редакторе</p>
+                      </div>
+                    ) : userTemplates.map((tmpl) => {
+                      const pagesData = (tmpl.pages_data as any[]) ?? [];
+                      return (
+                        <div key={tmpl.id} className="relative group rounded-xl border border-border p-5 hover:border-primary/40 hover:bg-primary/5 transition-all">
+                          <button
+                            className="absolute top-2 right-2 p-1 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-all z-10"
+                            onClick={() => handleDeleteTemplate(tmpl.id)}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            disabled={creating || !newName.trim()}
+                            onClick={() => handleCreateFromTemplate(tmpl.id, newName, true)}
+                            className="text-left w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <div className="flex items-center gap-3 mb-2">
+                              <span className="text-2xl">{tmpl.icon}</span>
+                              <div>
+                                <div className="text-[14px] font-semibold">{tmpl.name}</div>
+                                <div className="text-[11px] text-muted-foreground">
+                                  {pagesData.length} {pagesData.length === 1 ? "страница" : pagesData.length < 5 ? "страницы" : "страниц"}
+                                  {tmpl.is_public && <span className="ml-1.5 text-primary">· публичный</span>}
+                                </div>
+                              </div>
+                            </div>
+                            {tmpl.description && <p className="text-[12px] text-muted-foreground leading-relaxed">{tmpl.description}</p>}
+                            <div className="mt-3 flex flex-wrap gap-1">
+                              {pagesData.map((p: any, i: number) => (
+                                <span key={i} className="px-2 py-0.5 rounded-full bg-secondary text-[10px] text-muted-foreground">{p.title}</span>
+                              ))}
+                            </div>
+                            <div className="text-[10px] text-muted-foreground mt-2">{tmpl.category}</div>
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </div>
