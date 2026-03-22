@@ -143,7 +143,7 @@ export function useEditorData() {
         page_id: currentPageId,
         type: s.type,
         label: s.label,
-        content: s.content as unknown as Json,
+        content: { ...s.content, ...(s.animation && s.animation !== "none" ? { __animation: s.animation } : {}) } as unknown as Json,
         sort_order: i,
       }));
       const { error } = await supabase.from("sections").insert(inserts);
