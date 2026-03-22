@@ -111,6 +111,14 @@ const EditorTopbar = ({
           <span className="hidden sm:inline">HTML</span>
         </button>
         <button
+          onClick={onSaveAsTemplate}
+          className="flex items-center gap-1 px-2.5 py-1 rounded text-[12px] text-muted-foreground hover:bg-secondary transition-colors"
+          title="Сохранить как шаблон"
+        >
+          <BookTemplate className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Шаблон</span>
+        </button>
+        <button
           onClick={onPublish}
           className="flex items-center gap-1 px-3 py-1 rounded-lg bg-success text-white text-[12px] font-medium hover:bg-success/90 transition-colors active:scale-[0.97]"
         >
