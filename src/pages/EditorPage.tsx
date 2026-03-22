@@ -156,7 +156,8 @@ const EditorPage = () => {
         <EditorCanvas
           device={device} sections={sections} selected={selected} setSelected={setSelected}
           onSectionsReorder={handleSectionsReorder} onSectionContentChange={handleContentChange}
-          onDeleteSection={handleDeleteSection} previewMode={previewMode}
+          onDeleteSection={handleDeleteSection} onDuplicateSection={handleDuplicateSection}
+          previewMode={previewMode}
         />
         {!previewMode && (
           <EditorProperties sections={sections} selected={selected} setSelected={setSelected} onUpdateResponsive={handleUpdateResponsive} />
