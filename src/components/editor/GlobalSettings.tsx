@@ -3,6 +3,7 @@ import { X, Type, Palette, Search as SearchIcon, Globe, Settings2, Sparkles, Sha
 import { fontPresets, type FontPreset } from "@/lib/presets/fontPresets";
 import { colorPresets, type ColorPreset } from "@/lib/presets/colorPresets";
 import { shapePresets, type ShapePreset } from "@/lib/presets/shapePresets";
+import { gradientPresets, type GradientPreset } from "@/lib/presets/gradientPresets";
 import type { SiteSettings } from "@/lib/presets/seoDefaults";
 import { defaultSiteSettings } from "@/lib/presets/seoDefaults";
 
