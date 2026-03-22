@@ -194,6 +194,12 @@ export function useEditorData() {
     toast.success("Страница удалена");
   }, [siteData, activePageId, queryClient]);
 
+  const updateSiteSettings = useCallback(async (newSettings: SiteSettings) => {
+    setSiteSettingsState(newSettings);
+    if (!siteData?.siteId) return;
+    await supabase.from("sites").update({ settings: newSettings as unknown as Json }).eq("id", siteData.siteId);
+  }, [siteData?.siteId]);
+
   const isLoading = siteLoading || sectionsLoading || initialized !== currentPageId;
   const isAuthenticated = !!siteData;
 
@@ -211,5 +217,7 @@ export function useEditorData() {
     isAuthenticated,
     saveStatus,
     saveMutation,
+    siteSettings,
+    updateSiteSettings,
   };
 }
