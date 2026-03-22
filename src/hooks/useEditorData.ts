@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import type { Section, SectionContent } from "@/components/editor/types";
+import type { Section, SectionContent, AnimationType } from "@/components/editor/types";
 import type { Json } from "@/integrations/supabase/types";
 import type { SiteSettings } from "@/lib/presets/seoDefaults";
 import { defaultSiteSettings } from "@/lib/presets/seoDefaults";
@@ -106,6 +106,7 @@ export function useEditorData() {
         type: row.type as Section["type"],
         label: row.label,
         content: row.content as unknown as SectionContent,
+        animation: ((row.content as any)?.__animation as AnimationType) ?? undefined,
       })) as Section[];
     },
     enabled: !!currentPageId,
@@ -142,7 +143,7 @@ export function useEditorData() {
         page_id: currentPageId,
         type: s.type,
         label: s.label,
-        content: s.content as unknown as Json,
+        content: { ...s.content, ...(s.animation && s.animation !== "none" ? { __animation: s.animation } : {}) } as unknown as Json,
         sort_order: i,
       }));
       const { error } = await supabase.from("sections").insert(inserts);

@@ -233,6 +233,45 @@ export type Database = {
         }
         Relationships: []
       }
+      templates: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          is_public: boolean
+          name: string
+          pages_data: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          is_public?: boolean
+          name: string
+          pages_data?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          is_public?: boolean
+          name?: string
+          pages_data?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Plus, Trash2, Copy } from "lucide-react";
 import EditableText from "./EditableText";
 import type {
@@ -291,6 +291,9 @@ const EditorCanvas = ({
 
   const renderVideo = (s: Section) => {
     const c = s.content as VideoContent;
+    const isYoutube = c.url?.includes("youtube") || c.url?.includes("youtu.be");
+    const isVimeo = c.url?.includes("vimeo");
+    const isDirect = !isYoutube && !isVimeo;
     return (
       <div className={cls(s.id)} onClick={() => setSelected(s.id)}>
         {!previewMode && sc(s)}
@@ -298,13 +301,51 @@ const EditorCanvas = ({
         <EditableText value={c.description} onChange={(v) => onSectionContentChange(s.id, { ...c, description: v })} className="text-[13px] text-muted-foreground mb-4" disabled={previewMode} />
         <div className="aspect-video rounded-lg bg-muted/30 border border-border overflow-hidden">
           {previewMode ? (
-            <iframe src={c.url} className="w-full h-full" frameBorder="0" allowFullScreen />
+            isDirect ? (
+              <video
+                src={c.url}
+                className="w-full h-full object-cover"
+                autoPlay={c.autoplay ?? false}
+                loop={c.loop ?? false}
+                muted={c.muted ?? true}
+                playsInline
+                controls
+                poster={c.poster}
+              />
+            ) : (
+              <iframe src={c.url} className="w-full h-full" frameBorder="0" allowFullScreen allow="autoplay; fullscreen" />
+            )
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-muted-foreground text-[12px]">
-              ▶ Видео: {c.url}
+            <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground text-[12px] gap-2">
+              <span className="text-2xl">▶</span>
+              <span>{isYoutube ? "YouTube" : isVimeo ? "Vimeo" : "Видео"}: {c.url}</span>
+              {isDirect && (
+                <div className="flex gap-2 text-[10px]">
+                  {c.autoplay && <span className="px-1.5 py-0.5 rounded bg-primary/10 text-primary">Autoplay</span>}
+                  {c.loop && <span className="px-1.5 py-0.5 rounded bg-primary/10 text-primary">Loop</span>}
+                  {c.muted && <span className="px-1.5 py-0.5 rounded bg-primary/10 text-primary">Muted</span>}
+                </div>
+              )}
             </div>
           )}
         </div>
+        {!previewMode && isDirect && (
+          <div className="flex gap-2 mt-2 flex-wrap">
+            {[
+              { key: "autoplay", label: "Автовоспр.", val: c.autoplay },
+              { key: "loop", label: "Цикл", val: c.loop },
+              { key: "muted", label: "Без звука", val: c.muted },
+            ].map(opt => (
+              <button
+                key={opt.key}
+                onClick={(e) => { e.stopPropagation(); onSectionContentChange(s.id, { ...c, [opt.key]: !opt.val }); }}
+                className={`px-2 py-1 rounded text-[10px] transition-colors ${
+                  opt.val ? "bg-primary/10 text-primary border border-primary/20" : "border border-border text-muted-foreground hover:bg-secondary"
+                }`}
+              >{opt.label}</button>
+            ))}
+          </div>
+        )}
       </div>
     );
   };
@@ -793,14 +834,43 @@ const EditorCanvas = ({
     form: renderForm, separator: renderSeparator, cta: renderCTA, html: renderHTML, footer: renderFooter,
   };
 
+  const animClass = (anim?: string) => anim && anim !== "none" ? `sec-anim-${anim}` : "";
+
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!previewMode) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setVisibleSections(prev => new Set(prev).add(entry.target.getAttribute("data-section-id") ?? ""));
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    const el = canvasRef.current;
+    if (el) {
+      el.querySelectorAll("[data-section-id]").forEach(node => observer.observe(node));
+    }
+    return () => observer.disconnect();
+  }, [previewMode, sections]);
+
   return (
-    <div className="flex-1 bg-[#ebebeb] overflow-auto flex justify-center p-6">
+    <div className="flex-1 bg-[#ebebeb] overflow-auto flex justify-center p-6" ref={canvasRef}>
       <div className={`${canvasWidth} w-full`}>
         <div className="bg-background rounded-lg shadow-canvas overflow-hidden">
           {sections.map((section) => (
             <div
               key={section.id}
-              className={`group relative ${previewMode ? "" : "pl-6"}`}
+              data-section-id={section.id}
+              className={`group relative ${previewMode ? "" : "pl-6"} ${
+                previewMode && section.animation && section.animation !== "none"
+                  ? visibleSections.has(section.id) ? animClass(section.animation) : "opacity-0"
+                  : ""
+              }`}
               draggable={!previewMode}
               onDragStart={(e) => handleDragStart(e, section.id)}
               onDragEnd={handleDragEnd}

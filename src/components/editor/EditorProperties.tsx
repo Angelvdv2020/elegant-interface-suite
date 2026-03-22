@@ -1,13 +1,15 @@
 import { useState, useCallback } from "react";
 import { ChevronDown, Monitor, Tablet, Smartphone, Eye, EyeOff } from "lucide-react";
-import type { Section, Breakpoint, ResponsiveSettings } from "./types";
+import type { Section, Breakpoint, ResponsiveSettings, AnimationType } from "./types";
 import { defaultResponsiveSettings } from "./types";
+import AnimationSettings from "./AnimationSettings";
 
 interface EditorPropertiesProps {
   sections: Section[];
   selected: string;
   setSelected: (id: string) => void;
   onUpdateResponsive?: (sectionId: string, responsive: Record<Breakpoint, ResponsiveSettings>) => void;
+  onUpdateAnimation?: (sectionId: string, animation: AnimationType) => void;
 }
 
 const breakpoints: { key: Breakpoint; label: string; icon: typeof Monitor }[] = [
@@ -23,7 +25,7 @@ const paddingLabels = [
   { key: "left" as const, label: "←" },
 ];
 
-const EditorProperties = ({ sections, selected, setSelected, onUpdateResponsive }: EditorPropertiesProps) => {
+const EditorProperties = ({ sections, selected, setSelected, onUpdateResponsive, onUpdateAnimation }: EditorPropertiesProps) => {
   const [activeBreakpoint, setActiveBreakpoint] = useState<Breakpoint>("desktop");
 
   const selectedSection = sections.find((s) => s.id === selected);
@@ -143,6 +145,12 @@ const EditorProperties = ({ sections, selected, setSelected, onUpdateResponsive 
               })}
             </div>
           </div>
+
+          {/* Animation */}
+          <AnimationSettings
+            animation={selectedSection.animation ?? "none"}
+            onChange={(anim) => onUpdateAnimation?.(selectedSection.id, anim)}
+          />
         </>
       ) : (
         <div className="px-3 py-6 text-center text-[11px] text-muted-foreground">

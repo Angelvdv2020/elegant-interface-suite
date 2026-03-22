@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import {
   Undo2, Redo2, Monitor, Tablet, Smartphone, Eye, EyeOff, Save,
-  Settings2, Layers, Blocks, LogOut, History, Download, SlidersHorizontal
+  Settings2, Layers, Blocks, LogOut, History, Download, SlidersHorizontal, BookTemplate
 } from "lucide-react";
 
 interface EditorTopbarProps {
@@ -22,6 +22,7 @@ interface EditorTopbarProps {
   onOpenHistory?: () => void;
   onExportHtml?: () => void;
   onOpenSettings?: () => void;
+  onSaveAsTemplate?: () => void;
 }
 
 const EditorTopbar = ({
@@ -29,7 +30,7 @@ const EditorTopbar = ({
   onUndo, onRedo, canUndo, canRedo,
   previewMode, onTogglePreview,
   onPublish, onSaveDraft, saveStatus = "saved",
-  onSignOut, onOpenHistory, onExportHtml, onOpenSettings,
+  onSignOut, onOpenHistory, onExportHtml, onOpenSettings, onSaveAsTemplate,
 }: EditorTopbarProps) => (
   <div className="flex items-center gap-1.5 px-3 h-11 border-b border-border bg-secondary/50 shrink-0">
     <Link to="/dashboard" className="flex items-center gap-1.5 mr-2">
@@ -108,6 +109,14 @@ const EditorTopbar = ({
         >
           <Download className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">HTML</span>
+        </button>
+        <button
+          onClick={onSaveAsTemplate}
+          className="flex items-center gap-1 px-2.5 py-1 rounded text-[12px] text-muted-foreground hover:bg-secondary transition-colors"
+          title="Сохранить как шаблон"
+        >
+          <BookTemplate className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Шаблон</span>
         </button>
         <button
           onClick={onPublish}

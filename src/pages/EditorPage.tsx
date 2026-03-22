@@ -7,7 +7,7 @@ import EditorProperties from "@/components/editor/EditorProperties";
 import { useEditorData } from "@/hooks/useEditorData";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import type { Section, SectionType, Breakpoint, ResponsiveSettings } from "@/components/editor/types";
+import type { Section, SectionType, Breakpoint, ResponsiveSettings, AnimationType } from "@/components/editor/types";
 import { sectionTemplates } from "@/components/editor/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -15,6 +15,7 @@ import type { Json } from "@/integrations/supabase/types";
 import VersionHistory from "@/components/editor/VersionHistory";
 import GlobalSettings from "@/components/editor/GlobalSettings";
 import OnboardingTour from "@/components/editor/OnboardingTour";
+import SaveAsTemplate from "@/components/editor/SaveAsTemplate";
 import { downloadHtml } from "@/lib/exportHtml";
 
 const EditorPage = () => {
@@ -34,6 +35,7 @@ const EditorPage = () => {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [tourOpen, setTourOpen] = useState(false);
+  const [templateOpen, setTemplateOpen] = useState(false);
 
   // Undo/Redo
   const [history, setHistory] = useState<Section[][]>([]);
@@ -87,6 +89,11 @@ const EditorPage = () => {
 
   const handleUpdateResponsive = useCallback((sectionId: string, responsive: Record<Breakpoint, ResponsiveSettings>) => {
     const updated = sections.map(s => s.id === sectionId ? { ...s, responsive } : s);
+    setSections(updated); pushHistory(updated);
+  }, [sections, setSections, pushHistory]);
+
+  const handleUpdateAnimation = useCallback((sectionId: string, animation: AnimationType) => {
+    const updated = sections.map(s => s.id === sectionId ? { ...s, animation } : s);
     setSections(updated); pushHistory(updated);
   }, [sections, setSections, pushHistory]);
 
@@ -148,6 +155,7 @@ const EditorPage = () => {
         onSignOut={handleSignOut} onOpenHistory={() => setHistoryOpen(true)}
         onExportHtml={() => downloadHtml(sections, currentPage?.title ?? "Страница")}
         onOpenSettings={() => setSettingsOpen(true)}
+        onSaveAsTemplate={() => setTemplateOpen(true)}
       />
       <div className="flex flex-1 overflow-hidden">
         {!previewMode && (
@@ -166,7 +174,7 @@ const EditorPage = () => {
           previewMode={previewMode}
         />
         {!previewMode && (
-          <EditorProperties sections={sections} selected={selected} setSelected={setSelected} onUpdateResponsive={handleUpdateResponsive} />
+          <EditorProperties sections={sections} selected={selected} setSelected={setSelected} onUpdateResponsive={handleUpdateResponsive} onUpdateAnimation={handleUpdateAnimation} />
         )}
       </div>
       <div className="flex items-center gap-4 px-3 h-6 border-t border-border bg-secondary/50 text-[10px] text-muted-foreground shrink-0">
@@ -180,6 +188,14 @@ const EditorPage = () => {
       <VersionHistory open={historyOpen} onClose={() => setHistoryOpen(false)} pageId={pageId} onRestore={handleRestoreVersion} />
       <GlobalSettings open={settingsOpen} onClose={() => setSettingsOpen(false)} settings={siteSettings} onUpdate={updateSiteSettings} />
       <OnboardingTour forceOpen={tourOpen} onClose={() => setTourOpen(false)} />
+      <SaveAsTemplate
+        open={templateOpen}
+        onClose={() => setTemplateOpen(false)}
+        siteId={siteId}
+        pages={pages}
+        currentSections={sections}
+        currentPageId={activePageId}
+      />
     </div>
   );
 };
