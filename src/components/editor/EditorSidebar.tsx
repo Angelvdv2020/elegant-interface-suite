@@ -59,6 +59,7 @@ const EditorSidebar = ({
   pages = [{ id: "main", title: "Главная", isActive: true }],
   onSelectPage, onAddPage,
   onToggleVisibility, onReorderSection,
+  isMobile = false,
 }: EditorSidebarProps) => {
   const [mediaOpen, setMediaOpen] = useState(false);
   const [showAddBlock, setShowAddBlock] = useState(false);
@@ -66,7 +67,7 @@ const EditorSidebar = ({
 
   return (
     <>
-      <div className="w-[200px] shrink-0 border-r border-border bg-secondary/30 flex flex-col overflow-y-auto hidden md:flex">
+      <div className={`${isMobile ? "w-full flex" : "w-[200px] shrink-0 border-r border-border bg-secondary/30 hidden md:flex"} flex-col overflow-y-auto`}>
         {/* Pages */}
         <div className="p-3 border-b border-border">
           <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">Страницы</div>
