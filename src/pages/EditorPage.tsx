@@ -92,6 +92,11 @@ const EditorPage = () => {
     setSections(updated); pushHistory(updated);
   }, [sections, setSections, pushHistory]);
 
+  const handleUpdateAnimation = useCallback((sectionId: string, animation: AnimationType) => {
+    const updated = sections.map(s => s.id === sectionId ? { ...s, animation } : s);
+    setSections(updated); pushHistory(updated);
+  }, [sections, setSections, pushHistory]);
+
   const handlePublish = useCallback(async () => {
     if (!pageId) return;
     await supabase.from("pages").update({ is_published: true, published_at: new Date().toISOString(), is_draft: false }).eq("id", pageId);
