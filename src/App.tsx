@@ -10,6 +10,7 @@ import SignupPage from "./pages/SignupPage";
 import EditorPage from "./pages/EditorPage";
 import DashboardPage from "./pages/DashboardPage";
 import NotFound from "./pages/NotFound";
+import PublicSitePage from "./pages/PublicSitePage";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,8 @@ const App = () => (
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/editor" element={<EditorPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/site/:siteSlug" element={<PublicSitePage />} />
+            <Route path="/site/:siteSlug/:pageSlug" element={<PublicSitePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
