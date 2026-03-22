@@ -35,6 +35,7 @@ const EditorPage = () => {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [tourOpen, setTourOpen] = useState(false);
+  const [templateOpen, setTemplateOpen] = useState(false);
 
   // Undo/Redo
   const [history, setHistory] = useState<Section[][]>([]);
