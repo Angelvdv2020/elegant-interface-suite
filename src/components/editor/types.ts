@@ -1,10 +1,30 @@
 export type SectionType = "hero" | "cards" | "text" | "gallery" | "form" | "separator" | "cta";
+export type Breakpoint = "desktop" | "tablet" | "mobile";
+
+export interface ResponsivePadding {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
+export interface ResponsiveSettings {
+  padding: ResponsivePadding;
+  visible: boolean;
+}
+
+export const defaultResponsiveSettings: Record<Breakpoint, ResponsiveSettings> = {
+  desktop: { padding: { top: 28, right: 32, bottom: 28, left: 32 }, visible: true },
+  tablet: { padding: { top: 20, right: 24, bottom: 20, left: 24 }, visible: true },
+  mobile: { padding: { top: 16, right: 16, bottom: 16, left: 16 }, visible: true },
+};
 
 export interface Section {
   id: string;
   type: SectionType;
   label: string;
   content: SectionContent;
+  responsive?: Record<Breakpoint, ResponsiveSettings>;
 }
 
 export interface HeroContent {
