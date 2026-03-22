@@ -7,7 +7,7 @@ import EditorProperties from "@/components/editor/EditorProperties";
 import { useEditorData } from "@/hooks/useEditorData";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import type { Section, SectionType, Breakpoint, ResponsiveSettings } from "@/components/editor/types";
+import type { Section, SectionType, Breakpoint, ResponsiveSettings, AnimationType } from "@/components/editor/types";
 import { sectionTemplates } from "@/components/editor/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -15,6 +15,7 @@ import type { Json } from "@/integrations/supabase/types";
 import VersionHistory from "@/components/editor/VersionHistory";
 import GlobalSettings from "@/components/editor/GlobalSettings";
 import OnboardingTour from "@/components/editor/OnboardingTour";
+import SaveAsTemplate from "@/components/editor/SaveAsTemplate";
 import { downloadHtml } from "@/lib/exportHtml";
 
 const EditorPage = () => {
