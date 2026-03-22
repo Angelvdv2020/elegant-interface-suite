@@ -70,7 +70,10 @@ const LoginPage = () => {
               Войти
             </Button>
           </form>
-          <p className="mt-6 text-center text-sm text-muted-foreground">
+          <div className="mt-4 text-center">
+            <Link to="/forgot-password" className="text-sm text-muted-foreground hover:text-foreground">Забыли пароль?</Link>
+          </div>
+          <p className="mt-4 text-center text-sm text-muted-foreground">
             Нет аккаунта? <Link to="/signup" className="text-brand font-medium hover:underline">Зарегистрироваться</Link>
           </p>
         </div>
