@@ -134,6 +134,11 @@ export interface VideoContent {
   url: string;
   title: string;
   description: string;
+  autoplay?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  poster?: string;
+  provider?: "youtube" | "vimeo" | "direct";
 }
 
 export interface StatItem {
