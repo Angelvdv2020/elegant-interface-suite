@@ -79,6 +79,7 @@ const EditorCanvas = ({
   onSectionsReorder, onSectionContentChange, onDeleteSection,
   onDuplicateSection,
   previewMode = false,
+  siteStyles,
 }: EditorCanvasProps) => {
   const canvasWidth = device === "desktop" ? "max-w-[720px]" : device === "tablet" ? "max-w-[480px]" : "max-w-[320px]";
   const [dragOverId, setDragOverId] = useState<string | null>(null);
