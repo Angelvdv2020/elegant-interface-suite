@@ -14,7 +14,7 @@ interface GlobalSettingsProps {
   onUpdate: (settings: SiteSettings) => void;
 }
 
-type Tab = "fonts" | "colors" | "seo" | "spacing" | "effects" | "shapes";
+type Tab = "fonts" | "colors" | "gradients" | "seo" | "spacing" | "effects" | "shapes";
 
 const tabs: { key: Tab; label: string; icon: typeof Type }[] = [
   { key: "fonts", label: "Шрифты", icon: Type },
