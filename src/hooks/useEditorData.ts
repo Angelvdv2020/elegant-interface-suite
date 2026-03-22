@@ -51,6 +51,12 @@ async function resolveSiteAndPages(siteId: string | null) {
     }
   }
 
+  // Load settings
+  const { data: siteRow } = await supabase.from("sites").select("settings").eq("id", resolvedSiteId).single();
+  const settings: SiteSettings = siteRow?.settings && typeof siteRow.settings === "object" && !Array.isArray(siteRow.settings)
+    ? { ...defaultSiteSettings, ...(siteRow.settings as unknown as Partial<SiteSettings>) }
+    : { ...defaultSiteSettings };
+
   const { data: pages } = await supabase.from("pages").select("id, title, slug, sort_order").eq("site_id", resolvedSiteId).order("sort_order");
 
   if (!pages || pages.length === 0) {
@@ -58,10 +64,10 @@ async function resolveSiteAndPages(siteId: string | null) {
     if (error || !newPage) throw error;
     const inserts = defaultSections.map((s, i) => ({ page_id: newPage.id, type: s.type, label: s.label, content: s.content as unknown as Json, sort_order: i }));
     await supabase.from("sections").insert(inserts);
-    return { siteId: resolvedSiteId, pages: [newPage] as PageInfo[] };
+    return { siteId: resolvedSiteId, pages: [newPage] as PageInfo[], settings };
   }
 
-  return { siteId: resolvedSiteId, pages: pages as PageInfo[] };
+  return { siteId: resolvedSiteId, pages: pages as PageInfo[], settings };
 }
 
 export function useEditorData() {
