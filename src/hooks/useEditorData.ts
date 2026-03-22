@@ -115,11 +115,15 @@ export function useEditorData() {
   const [initialized, setInitialized] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">("saved");
   const [siteSettings, setSiteSettingsState] = useState<SiteSettings>(defaultSiteSettings);
+  const [settingsInitialized, setSettingsInitialized] = useState(false);
 
   // Sync settings from DB
   useEffect(() => {
-    if (siteData?.settings) setSiteSettingsState(siteData.settings);
-  }, [siteData?.settings]);
+    if (siteData && siteData.settings && !settingsInitialized) {
+      setSiteSettingsState(siteData.settings);
+      setSettingsInitialized(true);
+    }
+  }, [siteData, settingsInitialized]);
 
   useEffect(() => {
     if (dbSections && initialized !== currentPageId) {
