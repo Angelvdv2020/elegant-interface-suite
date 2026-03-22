@@ -65,6 +65,10 @@ const EditorTopbar = ({
           <History className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">История</span>
         </button>
+        <button onClick={onOpenSettings} className="flex items-center gap-1 px-2 py-1 rounded text-[12px] text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors" title="Настройки сайта">
+          <SlidersHorizontal className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Настройки</span>
+        </button>
       </>
     )}
 
