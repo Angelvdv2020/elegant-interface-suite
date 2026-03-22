@@ -167,26 +167,85 @@ const EditorPage = () => {
         onOpenSettings={() => setSettingsOpen(true)}
         onSaveAsTemplate={() => setTemplateOpen(true)}
       />
-      <div className="flex flex-1 overflow-hidden">
+      {/* Mobile panel toggles */}
+      {!previewMode && (
+        <div className="flex md:hidden items-center gap-1 px-2 py-1 border-b border-border bg-secondary/30 shrink-0">
+          <button
+            onClick={() => { setMobileSidebar(!mobileSidebar); setMobileProps(false); }}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-[12px] font-medium transition-colors ${mobileSidebar ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"}`}
+          >
+            <PanelLeft className="h-3.5 w-3.5" />
+            Секции
+          </button>
+          <button
+            onClick={() => { setMobileProps(!mobileProps); setMobileSidebar(false); }}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-[12px] font-medium transition-colors ${mobileProps ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"}`}
+          >
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            Свойства
+          </button>
+        </div>
+      )}
+
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* Desktop sidebar */}
         {!previewMode && (
-          <EditorSidebar
-            sections={sections} selected={selected} setSelected={setSelected}
-            siteId={siteId} onAddSection={handleAddSection} onDeleteSection={handleDeleteSection}
-            pages={pages.map(p => ({ id: p.id, title: p.title, isActive: p.id === activePageId }))}
-            onSelectPage={handleSelectPage}
-            onAddPage={handleAddPage}
-            onToggleVisibility={(id) => {
-              const updated = sections.map(s => s.id === id ? { ...s, content: { ...s.content, __hidden: !(s.content as any).__hidden } } : s);
-              setSections(updated); pushHistory(updated);
-            }}
-            onReorderSection={(fromIdx, toIdx) => {
-              const updated = [...sections];
-              const [moved] = updated.splice(fromIdx, 1);
-              updated.splice(toIdx, 0, moved);
-              setSections(updated); pushHistory(updated);
-            }}
-          />
+          <div className="hidden md:flex">
+            <EditorSidebar
+              sections={sections} selected={selected} setSelected={setSelected}
+              siteId={siteId} onAddSection={handleAddSection} onDeleteSection={handleDeleteSection}
+              pages={pages.map(p => ({ id: p.id, title: p.title, isActive: p.id === activePageId }))}
+              onSelectPage={handleSelectPage}
+              onAddPage={handleAddPage}
+              onToggleVisibility={(id) => {
+                const updated = sections.map(s => s.id === id ? { ...s, content: { ...s.content, __hidden: !(s.content as any).__hidden } } : s);
+                setSections(updated); pushHistory(updated);
+              }}
+              onReorderSection={(fromIdx, toIdx) => {
+                const updated = [...sections];
+                const [moved] = updated.splice(fromIdx, 1);
+                updated.splice(toIdx, 0, moved);
+                setSections(updated); pushHistory(updated);
+              }}
+            />
+          </div>
         )}
+
+        {/* Mobile sidebar overlay */}
+        {!previewMode && mobileSidebar && (
+          <div className="absolute inset-0 z-30 flex md:hidden">
+            <div className="w-[280px] max-w-[80vw] bg-background border-r border-border shadow-lg overflow-y-auto">
+              <div className="flex items-center justify-between px-3 py-2 border-b border-border">
+                <span className="text-[12px] font-semibold">Секции и страницы</span>
+                <button onClick={() => setMobileSidebar(false)} className="p-1 rounded hover:bg-secondary">
+                  <X className="h-4 w-4 text-muted-foreground" />
+                </button>
+              </div>
+              <EditorSidebar
+                sections={sections} selected={selected}
+                setSelected={(id) => { setSelected(id); setMobileSidebar(false); }}
+                siteId={siteId} onAddSection={(type) => { handleAddSection(type); setMobileSidebar(false); }}
+                onDeleteSection={handleDeleteSection}
+                pages={pages.map(p => ({ id: p.id, title: p.title, isActive: p.id === activePageId }))}
+                onSelectPage={(id) => { handleSelectPage(id); setMobileSidebar(false); }}
+                onAddPage={handleAddPage}
+                onToggleVisibility={(id) => {
+                  const updated = sections.map(s => s.id === id ? { ...s, content: { ...s.content, __hidden: !(s.content as any).__hidden } } : s);
+                  setSections(updated); pushHistory(updated);
+                }}
+                onReorderSection={(fromIdx, toIdx) => {
+                  const updated = [...sections];
+                  const [moved] = updated.splice(fromIdx, 1);
+                  updated.splice(toIdx, 0, moved);
+                  setSections(updated); pushHistory(updated);
+                }}
+                isMobile
+              />
+            </div>
+            <div className="flex-1 bg-black/30" onClick={() => setMobileSidebar(false)} />
+          </div>
+        )}
+
         <EditorCanvas
           device={device} sections={sections} selected={selected} setSelected={setSelected}
           onSectionsReorder={handleSectionsReorder} onSectionContentChange={handleContentChange}
@@ -194,15 +253,35 @@ const EditorPage = () => {
           previewMode={previewMode}
           siteStyles={siteSettings}
         />
+
+        {/* Desktop properties */}
         {!previewMode && (
-          <EditorProperties sections={sections} selected={selected} setSelected={setSelected} onUpdateResponsive={handleUpdateResponsive} onUpdateAnimation={handleUpdateAnimation} />
+          <div className="hidden lg:flex">
+            <EditorProperties sections={sections} selected={selected} setSelected={setSelected} onUpdateResponsive={handleUpdateResponsive} onUpdateAnimation={handleUpdateAnimation} />
+          </div>
+        )}
+
+        {/* Mobile properties overlay */}
+        {!previewMode && mobileProps && (
+          <div className="absolute inset-0 z-30 flex justify-end lg:hidden">
+            <div className="flex-1 bg-black/30" onClick={() => setMobileProps(false)} />
+            <div className="w-[280px] max-w-[80vw] bg-background border-l border-border shadow-lg overflow-y-auto">
+              <div className="flex items-center justify-between px-3 py-2 border-b border-border">
+                <span className="text-[12px] font-semibold">Свойства блока</span>
+                <button onClick={() => setMobileProps(false)} className="p-1 rounded hover:bg-secondary">
+                  <X className="h-4 w-4 text-muted-foreground" />
+                </button>
+              </div>
+              <EditorProperties sections={sections} selected={selected} setSelected={setSelected} onUpdateResponsive={handleUpdateResponsive} onUpdateAnimation={handleUpdateAnimation} isMobile />
+            </div>
+          </div>
         )}
       </div>
       <div className="flex items-center gap-4 px-3 h-6 border-t border-border bg-secondary/50 text-[10px] text-muted-foreground shrink-0">
         <span className={`${statusColor} font-medium`}>{statusLabel}</span>
-        <span>Страница: {currentPage?.title ?? "—"}</span>
-        <span>{pages.length} стр.</span>
-        <span>{device === "desktop" ? "1280" : device === "tablet" ? "768" : "375"} × auto</span>
+        <span className="hidden sm:inline">Страница: {currentPage?.title ?? "—"}</span>
+        <span className="hidden sm:inline">{pages.length} стр.</span>
+        <span className="hidden sm:inline">{device === "desktop" ? "1280" : device === "tablet" ? "768" : "375"} × auto</span>
         {!isAuthenticated && <span className="text-amber-500">Войдите для сохранения</span>}
         <span className="ml-auto">v3.0</span>
       </div>
