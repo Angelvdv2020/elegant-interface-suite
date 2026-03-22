@@ -20,6 +20,7 @@ interface EditorSidebarProps {
   onAddPage?: () => void;
   onToggleVisibility?: (id: string) => void;
   onReorderSection?: (fromIdx: number, toIdx: number) => void;
+  isMobile?: boolean;
 }
 
 const iconMap: Record<string, React.ReactNode> = {
