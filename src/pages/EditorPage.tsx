@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import type { Json } from "@/integrations/supabase/types";
 import VersionHistory from "@/components/editor/VersionHistory";
 import GlobalSettings from "@/components/editor/GlobalSettings";
+import OnboardingTour from "@/components/editor/OnboardingTour";
 import { downloadHtml } from "@/lib/exportHtml";
 
 const EditorPage = () => {
