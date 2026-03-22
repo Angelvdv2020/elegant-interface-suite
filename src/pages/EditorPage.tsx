@@ -31,6 +31,7 @@ const EditorPage = () => {
   const [activeTab, setActiveTab] = useState<"design" | "layers" | "blocks">("design");
   const [previewMode, setPreviewMode] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Undo/Redo
   const [history, setHistory] = useState<Section[][]>([]);
