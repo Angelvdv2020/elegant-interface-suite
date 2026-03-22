@@ -5,6 +5,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import type { Section, SectionContent } from "@/components/editor/types";
 import type { Json } from "@/integrations/supabase/types";
+import type { SiteSettings } from "@/lib/presets/seoDefaults";
+import { defaultSiteSettings } from "@/lib/presets/seoDefaults";
 
 const defaultSections: Section[] = [
   {
