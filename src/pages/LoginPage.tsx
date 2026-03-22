@@ -21,7 +21,11 @@ const LoginPage = () => {
     const { error } = await signIn(email, password);
     setLoading(false);
     if (error) {
-      setError(error);
+      if (error.toLowerCase().includes("email not confirmed")) {
+        setError("Email не подтверждён. Проверьте почту и перейдите по ссылке для подтверждения.");
+      } else {
+        setError(error);
+      }
     } else {
       navigate("/dashboard");
     }

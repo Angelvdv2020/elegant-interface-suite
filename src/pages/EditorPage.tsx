@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useNetworkStatus } from "@/hooks/useNetworkStatus";
 import { useNavigate } from "react-router-dom";
 import EditorTopbar from "@/components/editor/EditorTopbar";
 import EditorSidebar from "@/components/editor/EditorSidebar";
@@ -28,6 +29,7 @@ const EditorPage = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
+  const online = useNetworkStatus();
   const [selected, setSelected] = useState("");
   const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [activeTab, setActiveTab] = useState<"design" | "layers" | "blocks">("design");
@@ -145,6 +147,12 @@ const EditorPage = () => {
 
   return (
     <div className="flex flex-col h-screen bg-background overflow-hidden">
+      {!online && (
+        <div className="flex items-center justify-center gap-2 px-3 py-1.5 bg-destructive text-destructive-foreground text-xs font-medium shrink-0">
+          <span className="inline-block h-2 w-2 rounded-full bg-destructive-foreground/70 animate-pulse" />
+          Нет подключения к сети — изменения сохранятся после восстановления
+        </div>
+      )}
       <EditorTopbar
         device={device} setDevice={setDevice}
         activeTab={activeTab} setActiveTab={setActiveTab}
